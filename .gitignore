@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+bin/bedtools
+bin/bowtie2
+bin/fastq-dump
+bin/samtools
+bin/trimmomatic-0.39.jar
