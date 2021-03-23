@@ -1,0 +1,6 @@
+/home/xiegy/tools/map_tool/bowtie2-2.4.2-linux-x86_64/bowtie2 -x hsa.hairpin.fa -p 8  --no-head --no-sq -N 1 -k 2 -L 15 -f /home/xiegy/github/EVAtool/test/example-data/SRR10078125/analysis.bowtie.kqh6l4_f.2021-03-23/SRR10078125.fa -S SRR10078125.sam
+
+# -p: -p/--threads <int> number of alignment threads to launch (1)
+# -N: max # mismatches in seed alignment; can be 0 or 1 (0)
+# -L: length of seed substrings; must be >3, <32 (22)
+# -k: report up to <int> alns per read; MAPQ not meaningful
