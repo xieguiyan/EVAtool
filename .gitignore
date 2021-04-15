@@ -132,5 +132,4 @@ bin/bowtie2
 bin/fastq-dump
 bin/samtools
 bin/trimmomatic-0.39.jar
-refs/
 test/example-data/
