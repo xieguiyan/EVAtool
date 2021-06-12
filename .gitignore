@@ -139,5 +139,7 @@ refs/sRNA.fa
 bin/bowtie2-align-l
 bin/bowtie2-align-l-debug
 .gitignore
+test/
 bin/bowtie2-align-s
 bin/bowtie2-align-s-debug
+test/example-script/tag_annotation_exp_new_method.py
