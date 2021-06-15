@@ -9,7 +9,10 @@
       "type": "python",
       "request": "launch",
       "program": "${file}",
-      "console": "integratedTerminal"
+      "args": ["-i", "SRR10078125", "-t", "SRR10078125.fa", "-o", "/home/xiegy/github/EVAtool/test/example-data/SRR10078125/analysis.bowtie.9py_ut81.2021-04-16", "-c", "/home/xiegy/github/EVAtool/refs/config.miRNA.s10.txt", "-l", "/home/xiegy/github/EVAtool/test/example-data/SRR10078125/analysis.bowtie.9py_ut81.2021-04-16/SRR10078125.anno.exp.log", "-s", "/home/xiegy/github/EVAtool/test/example-data/SRR10078125/analysis.bowtie.9py_ut81.2021-04-16/SRR10078125.fa.freq.stat"],
+      "cwd": "${fileDirname}",
+      "console": "integratedTerminal",
+      "justMyCode":true
     }
   ]
 }
