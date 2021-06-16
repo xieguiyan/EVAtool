@@ -133,13 +133,14 @@ bin/fastq-dump
 bin/samtools
 bin/trimmomatic-0.39.jar
 test/example-data/
+test/misc/
 refs/config.miRNA.s10.txt
 .gitignore
 refs/sRNA.fa
 bin/bowtie2-align-l
 bin/bowtie2-align-l-debug
 .gitignore
-test/
+# test/
 bin/bowtie2-align-s
 bin/bowtie2-align-s-debug
 # test/example-script/tag_annotation_exp_new_method.py
