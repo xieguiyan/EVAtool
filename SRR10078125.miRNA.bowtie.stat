@@ -1,4 +1,0 @@
-stat: Bad file descriptor
-Warning: Could not open read file "SRR10078125.fa" for reading; skipping...
-Error: No input read files were valid
-(ERR): bowtie2-align exited with value 1
