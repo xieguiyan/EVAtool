@@ -142,4 +142,4 @@ bin/bowtie2-align-l-debug
 test/
 bin/bowtie2-align-s
 bin/bowtie2-align-s-debug
-test/example-script/tag_annotation_exp_new_method.py
+# test/example-script/tag_annotation_exp_new_method.py
