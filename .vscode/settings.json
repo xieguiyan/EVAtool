@@ -6,14 +6,14 @@
   "python.linting.lintOnSave": true,
   "python.formatting.provider": "black",
   "python.formatting.blackPath": "venv/bin/black",
-  "python.formatting.blackArgs": ["--line-length", "128"],
+  "python.formatting.blackArgs": ["--line-length", "248"],
   "python.autoComplete.addBrackets": true,
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Path": "venv/bin/flake8",
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Args": [
-    "--max-line-length=128",
+    "--max-line-length=248",
     "--ignore=E401,E402,F841,F401,E302,E305,W391,W503"
   ],
   "[python]": {
@@ -55,7 +55,7 @@
   },
   "peacock.remoteColor": "#832561",
   "peacock.color": "#832561",
-  "jupyter.jupyterServerType": "remote",
+  "jupyter.jupyterServerType": "local",
   "code-runner.executorMap": {
     "python": "venv/bin/python"
   }
