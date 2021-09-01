@@ -13,8 +13,8 @@
 
 /home/xiegy/tools/anaconda3/bin/python \
   /home/xiegy/github/EVAtool/test/example-script/ncRNA_pipline.py \
-  -i /home/xiegy/github/EVAtool/test/example-data/SRR10078125.sra \
-  -n SRR10078125 \
-  -s /home/xiegy/github/EVAtool/test/example-data/SRR10078125.sh \
+  -i /home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra \
+  -n SRR8185773 \
+  -s /home/xiegy/github/EVAtool/test/example-data/SRR8185773.sh \
   -c /home/xiegy/github/EVAtool/refs/config_ncRNA.txt \
-  -d /home/xiegy/github/EVAtool/test/example-data/SRR10078125
+  -d /home/xiegy/github/EVAtool/test/example-data/SRR8185773

@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 """
 @@ script: sra_proceduere_bowtie.py
-@@ description: based on python3.5.2
-@@ now based on python3.6.5
-@@ author: zhangq
-@@ modified by Gui-Yan Xie
+@@ description: based on python3.6.5
+@@ author: Gui-Yan Xie
 """
 import argparse
 import datetime
@@ -121,13 +119,8 @@ def generate_command(script, srafiles, workdir, sample, config_file, config_env)
             ),
             script,
         )
-    #    'java -jar -Xms8000m -Xmx8000m /project/zhangq/tools/Trimmomatic-0.36/trimmomatic-0.36.jar SE -threads 8 SRR5030262_1.fastq SRR5030262_1.filter.11.gz ILLUMINACLIP:/project/zhangq/tools/Trimmomatic-0.36/adapters/sRNA.fa:2:10:4:5 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:15 -trimlog SRR5030262_1.filter.log'
     println("echo 'finish processing' >> benchmarks.log && date >> benchmarks.log", script)
-    #    println("mv *.txt *.sorted.bam *.log {workdir}".format(workdir=workdir, sra=sra))
     println("cd {workdir}".format(workdir=workdir), script)
-
-
-#    println("#rm -rf {temp}".format(temp=tempdir))
 
 
 def main(args):

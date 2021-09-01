@@ -5,7 +5,7 @@ import os,sys,re,argparse,gzip,commands
 
 
 def get_analysis_option():
-    my_cmdparser = argparse.ArgumentParser(description='transfrom fq reads to tag with numbers\n\tauther:zq,46211250@qq.com')
+    my_cmdparser = argparse.ArgumentParser(description='transfrom fq reads to tag with numbers\n')
     my_cmdparser.add_argument('-o',action='store',dest='outfile',type=str,help='outfile')
     my_cmdparser.add_argument('-i',action='store',dest='infile',help='in fq files')
     my_cmdparser.add_argument('-c',action='store',dest='cut_off',default = 1, type = int, help='cut off for reads count')
