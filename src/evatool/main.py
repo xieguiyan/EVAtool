@@ -6,11 +6,18 @@
 # @DESCRIPTION:
 
 import os, sys
+from src.evatool.utils import fastq
+from pathlib import Path
 from evatool.utils import Fastq
+from evatool.utils import Config
+from evatool.utils import Logger
 
 
-def run():
-    a = Fastq("a", "b", "c")
+def run(dir: Path, inputfile, outputdir, configfile) -> None:
+    config = Config(configfile)
+    logger = Logger(dir / f"{outputdir}.log.txt")
+    fastqfile = Fastq("a", "b", "c")
+    fastqfile.process_fastq()
     a.test()
     print("Hello World!")
 
