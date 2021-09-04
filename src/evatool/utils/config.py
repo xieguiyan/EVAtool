@@ -6,22 +6,21 @@
 # @DESCRIPTION:
 
 
+import json
+from pathlib import Path
+
+
 class Config(object):
-    def __init__(self, config_file):
-        self.config_file = config_file
-        self.config = {}
-        self.read_config()
+    def __init__(self, configfile="../resource/configure.json"):
+        self.configfile = Path(configfile)
+        self.config = self.read_config()
 
     def read_config(self):
-        with open(self.config_file, "r") as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("#"):
-                    continue
-                if line == "":
-                    continue
-                key, value = line.split("=")
-                self.config[key] = value
+        try:
+            with open(self.configfile, "r") as f:
+                return json.load(f)
+        except IOError:
+            print(f"{self.configfile} not exists.")
 
-    def get(self, key):
-        return self.config[key]
+
+# config = Config().config
