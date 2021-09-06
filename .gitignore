@@ -146,3 +146,5 @@ bin/bowtie2-align-s-debug
 # test/example-script/tag_annotation_exp_new_method.py
 refs/config_transfered.json
 *SRR8185773_1.fastq
+*log.txt
+*gz
