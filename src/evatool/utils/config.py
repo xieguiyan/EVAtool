@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- conding:utf-8 -*-
-# @AUTHOR: Chun-Jie Liu
-# @CONTACT: chunjie.sam.liu.at.gmail.com
+# @AUTHOR: Gui-Yan Xie
+# @CONTACT: xieguiyan.at.hust.edu.cn
 # @DATE: 2021-09-03 15:29:17
 # @DESCRIPTION:
 
