@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 class Config(object):
-    def __init__(self, configfile="../resource/configure.json"):
+    def __init__(self, configfile: Path = "../resource/configure.json"):
         self.configfile = Path(configfile)
         self.config = self.read_config()
 
