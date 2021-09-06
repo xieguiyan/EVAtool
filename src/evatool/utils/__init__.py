@@ -1,3 +1,3 @@
-from evatool.utils.fastq import Fastq
-from evatool.utils.config import Config
-from evatool.utils.logger import Logger
+import evatool.utils.fastq
+import evatool.utils.config
+import evatool.utils.logger
