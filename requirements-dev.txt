@@ -2,5 +2,7 @@ wheel
 black
 flake8
 pytest
+twine
+ipykernel
 pandas
 numpy
