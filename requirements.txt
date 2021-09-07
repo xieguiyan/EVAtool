@@ -1,5 +1,6 @@
+wheel
 black
 flake8
+pytest
 pandas
 numpy
-pytest
