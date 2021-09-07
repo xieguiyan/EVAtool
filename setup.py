@@ -12,7 +12,7 @@ setup(
     author_email="xieguiyanathustdotedudotcn",
     url="https://github.com/xieguiyan/EVAtool",
     packages=find_packages(where="src"),
-    install_requires=["numpy"],
+    install_requires=["numpy", "pandas"],
     license="MIT",
     platforms="any",
     package_dir={"evatool": "evatool"},
