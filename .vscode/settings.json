@@ -4,6 +4,7 @@
   "python.analysis.completeFunctionParens": true,
   "python.languageServer": "Pylance",
   "python.linting.lintOnSave": true,
+  "python.testing.pytestEnabled": true,
   "python.formatting.provider": "black",
   "python.formatting.blackPath": "venv/bin/black",
   "python.formatting.blackArgs": ["--line-length", "248"],
