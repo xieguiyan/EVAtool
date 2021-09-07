@@ -8,9 +8,11 @@
 import logging
 from pathlib import Path
 
+current_path = Path(__file__).parent
+
 
 class Logger(object):
-    def __init__(self, logfile: Path = "../../../test/tmp_result/evatools.log"):
+    def __init__(self, logfile: Path = current_path / "../../test/tmp_result/evatools.log"):
         self.logfile = logfile
 
     def log(self, message) -> None:
