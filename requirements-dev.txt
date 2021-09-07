@@ -3,6 +3,7 @@ black
 flake8
 pytest
 pytest-xdist
+tox
 twine
 ipykernel
 pandas
