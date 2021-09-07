@@ -2,5 +2,6 @@ wheel
 black
 flake8
 pytest
+ipykernel
 pandas
 numpy
