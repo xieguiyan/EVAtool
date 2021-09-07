@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": "venv/bin/python3",
+  "python.defaultInterpreterPath": "venv/bin/python3",
   "python.analysis.disabled": ["unresolved-import"],
   "python.analysis.completeFunctionParens": true,
   "python.languageServer": "Pylance",
@@ -33,7 +33,8 @@
     "**/templates": true,
     "**/rda": true,
     "**/.Rproj.user": true,
-    "**/*rds.gz": true
+    "**/*rds.gz": true,
+    ".pytest_cache": true
   },
   "gitlens.mode.active": "zen",
   "editor.wordWrap": "on",
