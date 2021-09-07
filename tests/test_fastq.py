@@ -1,6 +1,7 @@
 import sys
+from pathlib import Path
 
-sys.path.append("../evatool")
+sys.path.append("../EVAtool")
 
 
 def test_fastq():
@@ -9,5 +10,8 @@ def test_fastq():
     from evatool.utils.config import Config
     from evatool.utils.logger import Logger
 
-    fastq = Fastq(inputfile="../../../test/example-data/SRR8185773.sra", outputdir="../../../test/tmp_result", config=Config(), log=Logger())
-    # fastq.process_fastq()
+    fastq = Fastq(inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra", outputdir="/home/xiegy/github/EVAtool/test/tmp_result", config=Config(), log=Logger())
+    fastq.process_fastq()
+
+
+test_fastq()
