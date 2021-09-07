@@ -4,17 +4,20 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="evatool",
     version="0.0.1",
+    name="evatool",
     keyworkds="evatool",
-    description="Extracellular vesicle small RNA processing package",
+    description=long_description,
     author="Dr. Xie and Dr. Liu",
     author_email="xieguiyanathustdotedudotcn",
     url="https://github.com/xieguiyan/EVAtool",
-    packages=find_packages(where="src"),
+    packages=["evatools", "evatools.resource"],
+    include_package_data=True,
+    package_data={"evatools.resource": ["*.json"]},
     install_requires=["numpy", "pandas"],
     license="MIT",
     platforms="any",
     package_dir={"evatool": "evatool"},
     python_requires=">=3.5",
+    scripts=["bin/evatool"],
 )
