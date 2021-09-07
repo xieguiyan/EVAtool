@@ -9,9 +9,11 @@
 import json
 from pathlib import Path
 
+current_path = Path(__file__).parent
+
 
 class Config(object):
-    def __init__(self, configfile: Path = "../resource/configure.json"):
+    def __init__(self, configfile: Path = current_path / "../resource/configure.json"):
         self.configfile = Path(configfile)
         self.config = self.read_config()
 

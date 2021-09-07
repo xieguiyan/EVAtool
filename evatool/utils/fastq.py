@@ -6,9 +6,10 @@
 # @DESCRIPTION:
 
 from pathlib import Path
-from config import Config
-from logger import Logger
 import subprocess
+
+from .config import Config
+from .logger import Logger
 
 
 class Fastq(object):
@@ -46,8 +47,3 @@ class Fastq(object):
             self.log.log(message=f"Success in trimm {self.inputfile.stem} fastq file")
         else:
             self.log.log(message=f"Error in trimm {self.inputfile.stem} fastq file")
-
-
-fastq = Fastq(inputfile="../../../test/example-data/SRR8185773.sra", outputdir="../../../test/tmp_result", config=Config(), log=Logger())
-
-fastq.process_fastq()
