@@ -2,6 +2,7 @@ wheel
 black
 flake8
 pytest
+pytest-xdist
 twine
 ipykernel
 pandas
