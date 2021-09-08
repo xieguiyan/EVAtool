@@ -148,3 +148,5 @@ refs/config_transfered.json
 *SRR8185773_1.fastq
 *log.txt
 *gz
+*fa
+test/tmp_result/*

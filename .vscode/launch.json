@@ -10,9 +10,10 @@
       "request": "launch",
       "program": "${file}",
       "args": [],
+      "purpose": ["debug-test"],
       "cwd": "${fileDirname}",
       "console": "integratedTerminal",
-      "justMyCode": true
+      "justMyCode": false
     }
   ]
 }

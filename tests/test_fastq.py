@@ -14,4 +14,4 @@ def test_fastq():
     fastq.process_fastq()
 
 
-test_fastq()
+# test_fastq()

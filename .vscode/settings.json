@@ -1,10 +1,13 @@
 {
-  "python.pythonPath": "venv/bin/python3",
+  "python.defaultInterpreterPath": "venv/bin/python3",
   "python.analysis.disabled": ["unresolved-import"],
   "python.analysis.completeFunctionParens": true,
   "python.languageServer": "Pylance",
   "python.linting.lintOnSave": true,
   "python.testing.pytestEnabled": true,
+  "python.testing.pytestPath": "venv/bin/pytest",
+  "python.testing.pytestArgs": [],
+  "python.testing.autoTestDiscoverOnSaveEnabled": true,
   "python.formatting.provider": "black",
   "python.formatting.blackPath": "venv/bin/black",
   "python.formatting.blackArgs": ["--line-length", "248"],
@@ -33,7 +36,8 @@
     "**/templates": true,
     "**/rda": true,
     "**/.Rproj.user": true,
-    "**/*rds.gz": true
+    "**/*rds.gz": true,
+    ".pytest_cache": true
   },
   "gitlens.mode.active": "zen",
   "editor.wordWrap": "on",
