@@ -13,7 +13,8 @@ import gzip
 class Stat(object):
     def __init__(self, fastq: Fastq):
         self.fastq = fastq
-        self.statfile = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}'.freq.stat'"
+        self.freqfile = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.freq.stat"
+        self.tagfile = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa"
 
     def is_trimm(self):
         trimmfile = Path(f"{self.fastq.outputdir}/{self.fastq.trimname}")
@@ -22,7 +23,6 @@ class Stat(object):
     def stat_tag(self):
         tag_dict = {}
         trimmfile = f"{self.fastq.outputdir}/{self.fastq.trimname}"
-        print(trimmfile)
         self.fastq.log.log(message=trimmfile)
         f = gzip.open(trimmfile, "rt")
         for n, line in enumerate(f.readlines()):
@@ -41,7 +41,7 @@ class Stat(object):
         fq_len_frequency_dict = {}
         reads_n = 0
         out_reads_n = 0
-        with open(f"{self.fastq.inputfile.stem}.fa", "w") as statfile:
+        with open(self.tagfile, "w") as tf:
             for n, line in enumerate(sorted_tag_number):
                 seq_len = len(line)
                 seq_count = tag_dict[line]
@@ -54,12 +54,12 @@ class Stat(object):
                 tag_number = "t{0:0>8d}".format(tag_number)
                 if seq_count > 1:
                     out_reads_n += seq_count
-                    statfile.write(">{0}\t{1:d}\n{2}\n".format(tag_number, seq_count, line))
+                    tf.write(">{0}\t{1:d}\n{2}\n".format(tag_number, seq_count, line))
         return fq_len_frequency_dict, reads_n, out_reads_n
 
     def store_freq(self, fq_len_frequency_dict, reads_n, out_reads_n):
         len_stat_lst = [0, 0, 0, 0]
-        with open(f"{self.statfile}.freq.stat", "w") as of:
+        with open(self.freqfile, "w") as of:
             for i in fq_len_frequency_dict:
                 len_n = fq_len_frequency_dict[i]
                 len_freq = len_n / reads_n
@@ -80,7 +80,7 @@ class Stat(object):
             sorted_tag_number, tag_dict = self.stat_tag()
             fq_len_frequency_dict, reads_n, out_reads_n = self.store_tag(sorted_tag_number, tag_dict)
             self.store_freq(fq_len_frequency_dict, reads_n, out_reads_n)
-            if Path(self.statfile).exists():
+            if Path(self.freqfile).exists():
                 self.fastq.log.log(message="Success in stat seq in fq!")
             else:
                 self.fastq.log.log(message="Error in stat seq in fq!")
