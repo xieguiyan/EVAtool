@@ -71,7 +71,6 @@ def deal_mir_info(mirbase_file):
 def get_true_miRexp(tag_hairpin_dict, hairpin_tag_dict, mature_miRNA, tag_count_dict):
     divide_tag_expressoin_dict = {}
     mir_exp_dict = {}
-    # tag_ref_detail[i].setdefault(tag_name,{})[mapped_ref].append([mapped_start, mapped_distance, arm])
     tag_with_multi_assign_dict = {tag: ref for tag, ref in tag_hairpin_dict.items() if len(ref) > 1}
     sorted_tagn_4_multi_maps = sorted(tag_with_multi_assign_dict.keys(), key=lambda a: tag_count_dict[a], reverse=True)
     for tag in tag_hairpin_dict:
@@ -114,11 +113,7 @@ def get_tag_flag(stat_file):
         kept_tags = int(fields[-3])
         return kept_tags
     else:
-        printlg(
-            "The length of tags were out of the range 15-40 nt, please check the data. Time: {0}".format(
-                datetime.datetime.now().strftime("%c")
-            )
-        )
+        printlg("The length of tags were out of the range 15-40 nt, please check the data. Time: {0}".format(datetime.datetime.now().strftime("%c")))
         sys.exit()
 
 
@@ -177,13 +172,9 @@ def deal_mapped_info(mapped_anno_bed, mapped_unanno_bed, mapped_nc_tag_dict, un_
                     sorted_tag_type_counter = sorted(tag_type_counter.keys(), key=lambda a: tag_type_counter[a], reverse=True)
                     tag_type = sorted_tag_type_counter[0]
                     if "other" in ref_exp[tag_type]:
-                        ref_exp[tag_type]["other"] += sum(
-                            [tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict]
-                        )
+                        ref_exp[tag_type]["other"] += sum([tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
                     else:
-                        ref_exp[tag_type]["other"] = sum(
-                            [tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict]
-                        )
+                        ref_exp[tag_type]["other"] = sum([tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
                     new_anno_tags.update(unanno_flag)
                     for t_z in tags_id:
                         mapped_nc_tag_dict[t_z] = tag_type
@@ -210,9 +201,7 @@ def deal_mapped_info(mapped_anno_bed, mapped_unanno_bed, mapped_nc_tag_dict, un_
                 continue
             ref_lst = detail_info[strand_flag]
             try:
-                tmp_lst = sorted(
-                    ref_lst, key=lambda a: abs(int(a[1]) - mapped_start) + abs(int(a[2]) - mapped_end), reverse=True
-                )
+                tmp_lst = sorted(ref_lst, key=lambda a: abs(int(a[1]) - mapped_start) + abs(int(a[2]) - mapped_end), reverse=True)
             except Exception:
                 print(strand_flag)
                 print(ref_lst)
@@ -336,9 +325,7 @@ def mapped_genome_anno(configure, config_env, mapped_nc_tag_dict, un_annotated_t
     ]
     cmd = " ".join(cmd)
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = deal_mapped_info(
-        mapped_anno_bed, mapped_unanno_bed, mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp, tag_count_dict
-    )
+    (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = deal_mapped_info(mapped_anno_bed, mapped_unanno_bed, mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp, tag_count_dict)
     #    with open()
     return (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags)
 
@@ -438,7 +425,6 @@ def get_ncRNAs_exp(configure, config_env, ncRNA_lst):
 
 
 def main(configure):
-    # os.chdir("/home/xiegy/github/EVAtool/test/example-data/SRR10078125/analysis.bowtie.9py_ut81.2021-04-16/")
     global log_file
     log_file = open(configure.log_file, "w")
     if get_tag_flag(configure.stat_file):
@@ -446,15 +432,11 @@ def main(configure):
     config_env = get_config_env(configure.config)
     ncRNA_lst = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
     function_ncRNA_lst = ["miRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
-    (ref_exp, mapped_ncRNA_counts, tag_count_dict, mapped_nc_tag_dict, ref_tag_detail) = get_ncRNAs_exp(
-        configure, config_env, ncRNA_lst
-    )
+    (ref_exp, mapped_ncRNA_counts, tag_count_dict, mapped_nc_tag_dict, ref_tag_detail) = get_ncRNAs_exp(configure, config_env, ncRNA_lst)
     total_counts = sum(tag_count_dict.values())
     base_name = os.path.join(configure.outdir, configure.sample)
     un_annotated_tags_nc = {tag_id: tag_count_dict[tag_id] for tag_id in tag_count_dict if tag_id not in mapped_nc_tag_dict}
-    (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = mapped_genome_anno(
-        configure, config_env, mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp, tag_count_dict
-    )
+    (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = mapped_genome_anno(configure, config_env, mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp, tag_count_dict)
     un_mapped_tag = set(tag_count_dict.keys()) - map_to_genome_tags
     ncRNA_exp_stat = base_name + ".stat"
     tag_mapped_catagory = base_name + ".tag.ncRNA.classification"
