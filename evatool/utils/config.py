@@ -23,6 +23,3 @@ class Config(object):
                 return json.load(f)
         except IOError:
             print(f"{self.configfile} not exists.")
-
-
-# config = Config().config
