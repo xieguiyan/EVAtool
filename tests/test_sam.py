@@ -12,4 +12,7 @@ def test_sam():
     from evatool.utils.fastq import Fastq
 
     sam = SAM(fastq=Fastq(inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra", outputdir="/home/xiegy/github/EVAtool/test/tmp_result", config=Config(), log=Logger()))
-    sam.ncRNA_map()
+    sam.get_sam()
+
+
+test_sam()
