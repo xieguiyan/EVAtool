@@ -45,7 +45,7 @@ class SAM(object):
             "sort",
             f"{outputpre}.genome.bam",
             "-o",
-            f"{outputpre}.genome.sort",
+            f"{outputpre}.genome.sort.bam",
             "&&",
             self.fastq.config.config["bedtools"],
             "bamtobed -i",
