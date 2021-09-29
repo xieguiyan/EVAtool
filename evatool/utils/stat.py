@@ -43,12 +43,12 @@ class Stat(object):
 
     def get_fa4sRNA(self):
         tag_count = {}
+        print(self.tag_fa)
         with open(self.tag_fa, "r") as f:
             for i in f:
                 if i.startswith(">"):
                     tag_info = i.strip(">\n").split("\t")
                     tag_count[tag_info[0]] = int(tag_info[1])
-        print(int(tag_info[1]))
         return tag_count
 
     def get_true_miRexp(self, tag_hairpin_dict, hairpin_tag_dict, mature_miRNA, tag_count_dict):
@@ -141,9 +141,7 @@ class Stat(object):
         ref_exp = {}
         mapped_ncRNA_counts = {}
         tag_count_dict = self.get_fa4sRNA()
-        # print(tag_count_dict)
         (tag_ref_detail, ref_tag_detail, mature_miRNA, mapped_nc_tag_dict) = self.get_edit_distance()
-        # print(tag_ref_detail)
         for n, i in enumerate(self.ncrna_lst):
             ref_exp[i] = {}
             mapped_tags = tag_ref_detail[i].keys()
