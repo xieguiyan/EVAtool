@@ -5,9 +5,7 @@
 # @DATE: 2021-09-26 11:06:09
 # @DESCRIPTION:
 
-from sys import argv
 from .fastq import Fastq
-from .config import Config
 import subprocess
 from pathlib import Path
 from multiprocessing import Pool, cpu_count
@@ -54,7 +52,6 @@ class SAM(object):
             f"{outputpre}.genome.sort.bed",
         ]
         cmd = " ".join(cmd)
-        print(cmd)
         return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     def ncRNA_map(self, ncrna) -> None:
@@ -74,7 +71,6 @@ class SAM(object):
             f"{self.fastq.outputdir}/{sample_input}.{ncrna}.bowtie.stat",
         ]
         cmd = " ".join(cmd)
-        print(cmd)
         map_result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         if map_result.returncode == 0:
             self.fastq.log.log(f"Sucess in align to {ncrna} reference!")
