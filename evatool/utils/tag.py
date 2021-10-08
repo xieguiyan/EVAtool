@@ -13,8 +13,9 @@ import gzip
 class Tag(object):
     def __init__(self, fastq: Fastq):
         self.fastq = fastq
-        self.freqfile = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.freq.stat"
-        self.tagfile = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa"
+        self.prefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
+        self.freqfile = f"{self.prefix}.freq.stat"
+        self.tagfile = f"{self.prefix}.fa"
 
     def is_trimm(self):
         trimmfile = Path(f"{self.fastq.outputdir}/{self.fastq.trimname}")
@@ -22,9 +23,7 @@ class Tag(object):
 
     def stat_tag(self):
         tag_dict = {}
-        trimmfile = f"{self.fastq.outputdir}/{self.fastq.trimname}"
-        self.fastq.log.log(message=trimmfile)
-        f = gzip.open(trimmfile, "rt")
+        f = gzip.open(f"{self.fastq.outputdir}/{self.fastq.trimname}", "rt")
         for n, line in enumerate(f.readlines()):
             line_number = n + 1
             if line_number % 4 != 2:
@@ -54,7 +53,7 @@ class Tag(object):
                 tag_number = "t{0:0>8d}".format(tag_number)
                 if seq_count > 1:
                     out_reads_n += seq_count
-                    tf.write(">{0}\t{1:d}\n{2}\n".format(tag_number, seq_count, line))
+                    tf.write(f">{tag_number}\t{seq_count:d}\n{line}\n")
         return fq_len_frequency_dict, reads_n, out_reads_n
 
     def store_freq(self, fq_len_frequency_dict, reads_n, out_reads_n):
@@ -71,7 +70,7 @@ class Tag(object):
                     len_stat_lst[2] += len_freq
                 else:
                     len_stat_lst[3] += len_freq
-                of.write("{0}\t{1}\t{2:f}\n".format(i, len_n, len_freq))
+                of.write(f"{i}\t{len_n}\t{len_freq:f}\n")
             flag = "ok" if len_stat_lst[1] + len_stat_lst[2] > 0.5 else "no"
             of.write("{0}\t{1}\t{2:d}\t{3:.2f}\t{4:d}\n".format(flag, "\t".join([str("{0:.2f}".format(j)) for j in len_stat_lst]), out_reads_n, out_reads_n / reads_n, reads_n))
 
@@ -86,6 +85,3 @@ class Tag(object):
                 self.fastq.log.log(message="Error in stat seq in fq!")
         else:
             self.fastq.log.log(message="Trimmed file is not exist!")
-
-
-# stat_result = Stat(Fastq)
