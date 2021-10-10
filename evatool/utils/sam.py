@@ -16,6 +16,7 @@ class SAM(object):
         self.fastq = fastq
         self.samdir = Path(fastq.inputfile)
         self.tag_fa = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa"
+        self.ncrna_lst = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
 
     def mapped_genome_anno(self) -> None:
         outputpre = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
@@ -83,9 +84,8 @@ class SAM(object):
             self.fastq.log.log("Success in align to genome reference!")
         else:
             self.fastq.log.log("Failed in align to genome reference!")
-        ncrna_lst = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
         p = Pool(cpu_count())
-        for ncrna in ncrna_lst:
+        for ncrna in self.ncrna_lst:
             p.apply_async(self.ncRNA_map, args=(ncrna,))
         p.close()
         p.join()
