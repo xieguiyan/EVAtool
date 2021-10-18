@@ -105,7 +105,6 @@ def get_true_miRexp(tag_hairpin_dict, hairpin_tag_dict, mature_miRNA, tag_count_
 
 def get_tag_flag(stat_file):
     cmd = ["tail", "-n", "1", stat_file]
-    f_test = os.getcwd()
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     lines = res.stdout.decode().split("\n")
     fields = lines[0].strip().split("\t")
