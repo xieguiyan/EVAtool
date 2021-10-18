@@ -16,7 +16,7 @@ class Tag(object):
         self.prefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
         self.freqfile = f"{self.prefix}.freq.stat"
         self.tagfile = f"{self.prefix}.fa"
-        # self.tag_count_dict = {}
+        self.tag_count_dict = {}
 
     def is_trimm(self):
         trimmfile = Path(f"{self.fastq.outputdir}/{self.fastq.trimname}")
@@ -75,14 +75,15 @@ class Tag(object):
             flag = "ok" if len_stat_lst[1] + len_stat_lst[2] > 0.5 else "no"
             of.write("{0}\t{1}\t{2:d}\t{3:.2f}\t{4:d}\n".format(flag, "\t".join([str("{0:.2f}".format(j)) for j in len_stat_lst]), out_reads_n, out_reads_n / reads_n, reads_n))
 
-    # def get_tag_count(self):
-    #     tag_count = {}
-    #     with open(self.tag_fa, "r") as f:
-    #         for i in f:
-    #             if i.startswith(">"):
-    #                 tag_info = i.strip(">\n").split("\t")
-    #                 tag_count[tag_info[0]] = int(tag_info[1])
-    #     return tag_count
+    def get_tag_count(self) -> None:
+        # tag_count = {}
+        with open(self.tagfile, "r") as f:
+            print("test_tag_count!")
+            for i in f:
+                if i.startswith(">"):
+                    tag_info = i.strip(">\n").split("\t")
+                    self.tag_count_dict[tag_info[0]] = int(tag_info[1])
+        # return self.tag_count
 
     def pocess_stat(self):
         if self.is_trimm():
@@ -90,7 +91,7 @@ class Tag(object):
             fq_len_frequency_dict, reads_n, out_reads_n = self.store_tag(sorted_tag_number, tag_dict)
             self.store_freq(fq_len_frequency_dict, reads_n, out_reads_n)
             if Path(self.tagfile).exists():
-                # self.tag_count_dict = self.get_tag_count()
+                self.get_tag_count()
                 self.fastq.log.log(message="Success in stat seq in fq!")
             else:
                 self.fastq.log.log(message="Error in stat seq in fq!")
