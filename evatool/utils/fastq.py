@@ -13,14 +13,17 @@ from .logger import Logger
 
 
 class Fastq(object):
-    def __init__(self, inputfile: Path, outputdir: Path, config: Config, log: Logger):
+    def __init__(self, inputfile: Path, outputdir: Path, config: Config, log: Logger, ncrna_lst: list = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]):
         self.inputfile = Path(inputfile)
         self.outputdir = outputdir
         self.config = config
         self.log = log
+        self.ncrna_lst = ncrna_lst
         self.trimname = f"{self.inputfile.stem}.fastq.trimmed.gz"
 
     def is_sra(self):
+        print(self.ncrna_lst)
+        print("test fastq ncrna lst!")
         return True if self.inputfile.suffix == ".sra" else False
 
     def dump_fastq(self):
@@ -43,7 +46,6 @@ class Fastq(object):
 
         runtrim = self.trim()
         if runtrim.returncode == 0:
-            print("trimm result")
             self.log.log(message=f"Success in trimm {self.inputfile.stem} fastq file")
         else:
             self.log.log(message=f"Error in trimm {self.inputfile.stem} fastq file")
