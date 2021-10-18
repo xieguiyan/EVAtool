@@ -22,8 +22,6 @@ class Fastq(object):
         self.trimname = f"{self.inputfile.stem}.fastq.trimmed.gz"
 
     def is_sra(self):
-        print(self.ncrna_lst)
-        print("test fastq ncrna lst!")
         return True if self.inputfile.suffix == ".sra" else False
 
     def dump_fastq(self):
