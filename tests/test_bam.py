@@ -15,4 +15,4 @@ def test_bam():
     bam.process_bam()
 
 
-test_bam()
+# test_bam()
