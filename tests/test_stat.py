@@ -10,6 +10,7 @@ def test_stat():
     from evatool.utils.config import Config
     from evatool.utils.logger import Logger
     from evatool.utils.fastq import Fastq
+    from evatool.utils.tag import Tag
 
     stat = Stat(fastq=Fastq(inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra", outputdir="/home/xiegy/github/EVAtool/test/tmp_result", config=Config(), log=Logger()))
     stat.stat_match()
