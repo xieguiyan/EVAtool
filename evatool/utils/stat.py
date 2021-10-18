@@ -5,7 +5,7 @@
 # @DATE: 2021-09-27 17:04:16
 # @DESCRIPTION:
 
-from .tag import Tag
+# from .tag import Tag
 from .fastq import Fastq
 import re
 import sys
@@ -16,6 +16,7 @@ from collections import Counter
 class Stat(object):
     def __init__(self, fastq: Fastq):
         self.fastq = fastq
+        # self.tag = tag
         self.tag_fa = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa"
         self.ncrna_lst = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
         self.samprefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
@@ -153,7 +154,7 @@ class Stat(object):
             else:
                 mir_exp_dict = self.get_true_miRexp(tag_ref_detail[i], ref_tag_detail[i], mature_miRNA, tag_count_dict)
                 ref_exp[i] = mir_exp_dict
-        return (ref_exp, mapped_ncRNA_counts, tag_count_dict, mapped_nc_tag_dict, ref_tag_detail)
+        return (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail, tag_count_dict)
 
     def sub_dict_modify(self, dct, keys, flag):
         if flag == 1:
@@ -253,7 +254,7 @@ class Stat(object):
         return (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags)
 
     def stat_match(self):
-        (ref_exp, mapped_ncRNA_counts, tag_count_dict, mapped_nc_tag_dict, ref_tag_detail) = self.get_ncRNAs_exp()
+        (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail, tag_count_dict) = self.get_ncRNAs_exp()
         total_counts = sum(tag_count_dict.values())
         un_annotated_tags_nc = {tag_id: tag_count_dict[tag_id] for tag_id in tag_count_dict if tag_id not in mapped_nc_tag_dict}
         (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = self.deal_mapped_info(mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp, tag_count_dict)
