@@ -5,7 +5,7 @@
 # @DATE: 2021-09-27 17:04:16
 # @DESCRIPTION:
 
-# from .tag import Tag
+from .tag import Tag
 from .fastq import Fastq
 import re
 import sys
@@ -14,9 +14,9 @@ from collections import Counter
 
 
 class Stat(object):
-    def __init__(self, fastq: Fastq):
+    def __init__(self, fastq: Fastq, tag: Tag):
         self.fastq = fastq
-        # self.tag = tag
+        self.tag = tag
         self.tag_fa = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa"
         self.samprefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
         self.function_ncRNA_lst = ["miRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
