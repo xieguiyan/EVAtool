@@ -12,7 +12,11 @@ def test_stat():
     from evatool.utils.fastq import Fastq
     from evatool.utils.tag import Tag
 
-    stat = Stat(fastq=Fastq(inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra", outputdir="/home/xiegy/github/EVAtool/test/tmp_result", config=Config(), log=Logger()))
+    stat = Stat(
+        fastq=Fastq(
+            inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra", outputdir="/home/xiegy/github/EVAtool/test/tmp_result", config=Config(), log=Logger(), ncrna_lst=["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
+        )
+    )
     stat.stat_match()
 
 

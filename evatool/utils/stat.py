@@ -18,7 +18,6 @@ class Stat(object):
         self.fastq = fastq
         # self.tag = tag
         self.tag_fa = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa"
-        self.ncrna_lst = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
         self.samprefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
         self.function_ncRNA_lst = ["miRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
 
@@ -93,7 +92,7 @@ class Stat(object):
         ref_tag_detail = {}
         distance_re = re.compile(r"NM:i:(\d)")
         mismatch_pattern = re.compile(r"MD:Z:(\d+)[A-Z]?(\d*)")
-        for n, i in enumerate(self.ncrna_lst):
+        for n, i in enumerate(self.fastq.ncrna_lst):
             tag_ref_detail[i] = {}
             ref_tag_detail[i] = {}
             with open(f"{self.samprefix}.{i}.sam", "r") as sf:
@@ -143,7 +142,7 @@ class Stat(object):
         mapped_ncRNA_counts = {}
         tag_count_dict = self.get_fa4sRNA()
         (tag_ref_detail, ref_tag_detail, mature_miRNA, mapped_nc_tag_dict) = self.get_edit_distance()
-        for n, i in enumerate(self.ncrna_lst):
+        for n, i in enumerate(self.fastq.ncrna_lst):
             ref_exp[i] = {}
             mapped_tags = tag_ref_detail[i].keys()
             mapped_ncRNA_counts[i] = sum([tag_count_dict[tag] for tag in mapped_tags])
@@ -273,7 +272,7 @@ class Stat(object):
         nes.write("#Unmapped tags: {0}({1:.2f}%)\n".format(total_counts - total_mapped_tags_sum, 100 - total_mapped_tags_ratio))
         nes.write("#Category\tMappedTag\tRatio\n")
         exp_cal_category = self.fastq.config.config["RPM"]
-        ncRNA_type_list = {"total": self.ncrna_lst, "ncRNAall": self.ncrna_lst, "func": self.function_ncRNA_lst, "ncRNAtype": self.ncrna_lst}
+        ncRNA_type_list = {"total": self.fastq.ncrna_lst, "ncRNAall": self.fastq.ncrna_lst, "func": self.function_ncRNA_lst, "ncRNAtype": self.fastq.ncrna_lst}
         exp_cal_method = {"total": total_mapped_tags_sum, "ncRNAall": total_mapped_nc_tags_sum, "func": function_nc_tags_sum_ori}
         for n, i in enumerate(ncRNA_type_list[exp_cal_category]):
             ncRNA_exp_file = f"{self.samprefix}.{i}.exp"
