@@ -43,7 +43,6 @@ class Stat(object):
 
     def get_fa4sRNA(self):
         tag_count = {}
-        print(self.tag_fa)
         with open(self.tag_fa, "r") as f:
             for i in f:
                 if i.startswith(">"):
@@ -253,6 +252,8 @@ class Stat(object):
         return (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags)
 
     def stat_match(self):
+        print("test tag count dict!")
+        print(self.tag.tag_count_dict["t00000001"])
         (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail, tag_count_dict) = self.get_ncRNAs_exp()
         total_counts = sum(tag_count_dict.values())
         un_annotated_tags_nc = {tag_id: tag_count_dict[tag_id] for tag_id in tag_count_dict if tag_id not in mapped_nc_tag_dict}
