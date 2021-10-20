@@ -41,24 +41,15 @@ class Stat(object):
                 hairpin_info[line[1]] = [hairpin_seq, hairpin_len]
         return (mature_miRNA, hairpin_info)
 
-    def get_fa4sRNA(self):
-        tag_count = {}
-        with open(self.tag_fa, "r") as f:
-            for i in f:
-                if i.startswith(">"):
-                    tag_info = i.strip(">\n").split("\t")
-                    tag_count[tag_info[0]] = int(tag_info[1])
-        return tag_count
-
-    def get_true_miRexp(self, tag_hairpin_dict, hairpin_tag_dict, mature_miRNA, tag_count_dict):
+    def get_true_miRexp(self, tag_hairpin_dict, hairpin_tag_dict, mature_miRNA):
         divide_tag_expressoin_dict = {}
         mir_exp_dict = {}
         tag_with_multi_assign_dict = {tag: ref for tag, ref in tag_hairpin_dict.items() if len(ref) > 1}
-        sorted_tagn_4_multi_maps = sorted(tag_with_multi_assign_dict.keys(), key=lambda a: tag_count_dict[a], reverse=True)
+        sorted_tagn_4_multi_maps = sorted(tag_with_multi_assign_dict.keys(), key=lambda a: self.tag.tag_count_dict[a], reverse=True)
         for tag in tag_hairpin_dict:
             hairpins = list(tag_hairpin_dict[tag].keys())
             hairpins_n = len(hairpins)
-            tag_count = tag_count_dict[tag]
+            tag_count = self.tag.tag_count_dict[tag]
             refs_mir = set()
             tmp_dict = {}
             for hairpin in hairpins:
@@ -139,20 +130,20 @@ class Stat(object):
     def get_ncRNAs_exp(self):
         ref_exp = {}
         mapped_ncRNA_counts = {}
-        tag_count_dict = self.get_fa4sRNA()
+        # tag_count_dict = self.get_fa4sRNA()
         (tag_ref_detail, ref_tag_detail, mature_miRNA, mapped_nc_tag_dict) = self.get_edit_distance()
         for n, i in enumerate(self.fastq.ncrna_lst):
             ref_exp[i] = {}
             mapped_tags = tag_ref_detail[i].keys()
-            mapped_ncRNA_counts[i] = sum([tag_count_dict[tag] for tag in mapped_tags])
+            mapped_ncRNA_counts[i] = sum([self.tag.tag_count_dict[tag] for tag in mapped_tags])
             if n:
                 for ref in ref_tag_detail[i]:
-                    ref_counts = sum([tag_count_dict[xx] for xx in ref_tag_detail[i][ref]])
+                    ref_counts = sum([self.tag.tag_count_dict[xx] for xx in ref_tag_detail[i][ref]])
                     ref_exp[i][ref] = ref_counts
             else:
-                mir_exp_dict = self.get_true_miRexp(tag_ref_detail[i], ref_tag_detail[i], mature_miRNA, tag_count_dict)
+                mir_exp_dict = self.get_true_miRexp(tag_ref_detail[i], ref_tag_detail[i], mature_miRNA)
                 ref_exp[i] = mir_exp_dict
-        return (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail, tag_count_dict)
+        return (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail)
 
     def sub_dict_modify(self, dct, keys, flag):
         if flag == 1:
@@ -160,7 +151,7 @@ class Stat(object):
         else:
             return dict([(key, dct.get(key)) for key in dct.keys() - keys])
 
-    def deal_mapped_info(self, mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp, tag_count_dict):
+    def deal_mapped_info(self, mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp):
         mapped_anno_bed = f"{self.samprefix}.genome.annotation.info"
         mapped_unanno_bed = f"{self.samprefix}.genome.unanno.info"
         details_mapped_tag = {}
@@ -182,9 +173,9 @@ class Stat(object):
                     sorted_tag_type_counter = sorted(tag_type_counter.keys(), key=lambda a: tag_type_counter[a], reverse=True)
                     tag_type = sorted_tag_type_counter[0]
                     if "other" in ref_exp[tag_type]:
-                        ref_exp[tag_type]["other"] += sum([tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
+                        ref_exp[tag_type]["other"] += sum([self.tag.tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
                     else:
-                        ref_exp[tag_type]["other"] = sum([tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
+                        ref_exp[tag_type]["other"] = sum([self.tag.tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
                     tmp_anno.extend(tags_id)
                     for t_z in tags_id:
                         mapped_nc_tag_dict[t_z] = tag_type
@@ -210,9 +201,9 @@ class Stat(object):
                         sorted_tag_type_counter = sorted(tag_type_counter.keys(), key=lambda a: tag_type_counter[a], reverse=True)
                         tag_type = sorted_tag_type_counter[0]
                         if "other" in ref_exp[tag_type]:
-                            ref_exp[tag_type]["other"] += sum([tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
+                            ref_exp[tag_type]["other"] += sum([self.tag.tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
                         else:
-                            ref_exp[tag_type]["other"] = sum([tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
+                            ref_exp[tag_type]["other"] = sum([self.tag.tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
                         new_anno_tags.update(unanno_flag)
                         for t_z in tags_id:
                             mapped_nc_tag_dict[t_z] = tag_type
@@ -252,20 +243,18 @@ class Stat(object):
         return (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags)
 
     def stat_match(self):
-        print("test tag count dict!")
-        print(self.tag.tag_count_dict["t00000001"])
-        (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail, tag_count_dict) = self.get_ncRNAs_exp()
-        total_counts = sum(tag_count_dict.values())
-        un_annotated_tags_nc = {tag_id: tag_count_dict[tag_id] for tag_id in tag_count_dict if tag_id not in mapped_nc_tag_dict}
-        (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = self.deal_mapped_info(mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp, tag_count_dict)
-        un_mapped_tag = set(tag_count_dict.keys()) - map_to_genome_tags
+        (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail) = self.get_ncRNAs_exp()
+        total_counts = sum(self.tag.tag_count_dict.values())
+        un_annotated_tags_nc = {tag_id: self.tag.tag_count_dict[tag_id] for tag_id in self.tag.tag_count_dict if tag_id not in mapped_nc_tag_dict}
+        (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = self.deal_mapped_info(mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp)
+        un_mapped_tag = set(self.tag.tag_count_dict.keys()) - map_to_genome_tags
         ncRNA_exp_stat = f"{self.samprefix}.stat"
         tag_mapped_catagory = f"{self.samprefix}.tag.ncRNA.classification"
         tag_mapped_catagory_handle = open(tag_mapped_catagory, "w")
         tag_mapped_catagory_handle.write("TagId\tTagCount\tCategory\tmapped_item\tregion\n")
         nes = open(ncRNA_exp_stat, "w")
-        total_mapped_tags_sum = sum([tag_count_dict[j] for j in map_to_genome_tags])
-        total_mapped_nc_tags_sum = sum([tag_count_dict[j] for j in mapped_nc_tag_dict])
+        total_mapped_tags_sum = sum([self.tag.tag_count_dict[j] for j in map_to_genome_tags])
+        total_mapped_nc_tags_sum = sum([self.tag.tag_count_dict[j] for j in mapped_nc_tag_dict])
         function_nc_tags_sum_ori = sum([mapped_ncRNA_counts.get(j, 0) for j in self.function_ncRNA_lst])
         total_mapped_tags_ratio = total_mapped_tags_sum / total_counts * 100
         nes.write("#Total tags: {0}\n".format(total_counts))
@@ -291,7 +280,7 @@ class Stat(object):
                 if j in ref_tag_detail[i]:
                     tmp_mapped_tags = ref_tag_detail[i][j] if j in ref_tag_detail[i] else []
                     for t in tmp_mapped_tags:
-                        tmp_tag_count = tag_count_dict[t]
+                        tmp_tag_count = self.tag.tag_count_dict[t]
                         tag_mapped_catagory_handle.write(t + "\t" + str(tmp_tag_count) + "\t" + i + "\t" + j + "\treference\n")
                 tmp_nc_counts = ref_exp[i][j]
                 nc_exp = tmp_nc_counts / exp_cal_method[exp_cal_category] * 1000000
@@ -303,7 +292,7 @@ class Stat(object):
         tag_mapped_genome_catagory_handle = open(tag_mapped_genome_catagory, "w")
         tag_mapped_genome_catagory_handle.write("TagId\tTagCount\tgenebody\topposite\n")
         for tag in new_anno_tag_detail:
-            tag_count = tag_count_dict[tag]
+            tag_count = self.tag.tag_count_dict[tag]
             tag_anno_info = new_anno_tag_detail[tag]
             tag_mapped_genome_catagory_handle.write(tag + "\t" + str(tag_count))
             for strand in ["genebody", "opposite"]:
