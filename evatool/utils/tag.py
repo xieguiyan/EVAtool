@@ -78,7 +78,6 @@ class Tag(object):
     def get_tag_count(self) -> None:
         # tag_count = {}
         with open(self.tagfile, "r") as f:
-            print("test_tag_count!")
             for i in f:
                 if i.startswith(">"):
                     tag_info = i.strip(">\n").split("\t")
