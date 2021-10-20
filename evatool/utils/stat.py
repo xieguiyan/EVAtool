@@ -21,27 +21,7 @@ class Stat(object):
         self.samprefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
         self.function_ncRNA_lst = ["miRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
 
-    def deal_mir_info(self):
-        mature_miRNA = {}
-        hairpin_info = {}
-        with open(self.fastq.config.config["mirbase"], "r") as f:
-            for i in f:
-                line = i.strip().split("\t")
-                hairpin_seq = line[4]
-                mir_seq = line[3]
-                miRNA_start = hairpin_seq.find(mir_seq)
-                if miRNA_start == -1:
-                    continue
-                miRNA_len = len(mir_seq)
-                hairpin_len = len(hairpin_seq)
-                arm = "5p" if hairpin_len > 2 * miRNA_start + miRNA_len - 1 else "3p"
-                mature_miRNA.setdefault(line[1], {})[arm] = [line[0], miRNA_start, miRNA_len, mir_seq, hairpin_seq]
-                if line[1] in hairpin_info:
-                    continue
-                hairpin_info[line[1]] = [hairpin_seq, hairpin_len]
-        return (mature_miRNA, hairpin_info)
-
-    def get_true_miRexp(self, tag_hairpin_dict, hairpin_tag_dict, mature_miRNA):
+    def get_true_miRexp(self, tag_hairpin_dict, hairpin_tag_dict):
         divide_tag_expressoin_dict = {}
         mir_exp_dict = {}
         tag_with_multi_assign_dict = {tag: ref for tag, ref in tag_hairpin_dict.items() if len(ref) > 1}
@@ -56,8 +36,8 @@ class Stat(object):
                 mapped_details = tag_hairpin_dict[tag][hairpin]
                 for mapped_detail in mapped_details:
                     arm = mapped_detail[-1]
-                    if arm in mature_miRNA[hairpin]:
-                        mir = mature_miRNA[hairpin][arm][0]
+                    if arm in self.fastq.config.mature_miRNA[hairpin]:
+                        mir = self.fastq.config.mature_miRNA[hairpin][arm][0]
                     else:
                         arm = str(8 - int(arm[0])) + "p"
                         mir = hairpin + "-" + arm
@@ -76,7 +56,6 @@ class Stat(object):
         return mir_exp_dict
 
     def get_edit_distance(self):
-        (mature_miRNA, hairpin_info) = self.deal_mir_info()
         mapped_nc_tag_dict = {}
         tag_ref_detail = {}
         ref_tag_detail = {}
@@ -103,14 +82,14 @@ class Stat(object):
                         tag_ref_detail[i].setdefault(tag_name, set()).add(mapped_ref)
                     else:
                         arm = "3p"
-                        if hairpin_info[line[2]][-1] - int(line[3]) * 2 - len(line[9]) + 1 > 0:
+                        if self.fastq.config.hairpin_info[line[2]][-1] - int(line[3]) * 2 - len(line[9]) + 1 > 0:
                             arm = "5p"
                         mapped_start = int(line[3])
                         if mapped_distance:
                             discard_flag = 0
                             mismatch_detail = mismatch_pattern.search(line[-2])
                             mismatch_loci = int(mismatch_detail.group(1)) + mapped_start - 1
-                            mir_seed_regions = [(z[1] + 1, z[1] + 7) for z in mature_miRNA[line[2]].values()]
+                            mir_seed_regions = [(z[1] + 1, z[1] + 7) for z in self.fastq.config.mature_miRNA[line[2]].values()]
                             for region in mir_seed_regions:
                                 if region[0] <= mismatch_loci <= region[1]:
                                     discard_flag = 1
@@ -122,7 +101,7 @@ class Stat(object):
                             tag_ref_detail[i].setdefault(tag_name, {})[mapped_ref] = [[mapped_start, mapped_distance, arm]]
                     ref_tag_detail[i].setdefault(mapped_ref, set()).add(tag_name)
                     mapped_nc_tag_dict[tag_name] = i
-        return tag_ref_detail, ref_tag_detail, mature_miRNA, mapped_nc_tag_dict
+        return tag_ref_detail, ref_tag_detail, mapped_nc_tag_dict
 
     def get_mismatch(self):
         pass
@@ -130,8 +109,7 @@ class Stat(object):
     def get_ncRNAs_exp(self):
         ref_exp = {}
         mapped_ncRNA_counts = {}
-        # tag_count_dict = self.get_fa4sRNA()
-        (tag_ref_detail, ref_tag_detail, mature_miRNA, mapped_nc_tag_dict) = self.get_edit_distance()
+        (tag_ref_detail, ref_tag_detail, mapped_nc_tag_dict) = self.get_edit_distance()
         for n, i in enumerate(self.fastq.ncrna_lst):
             ref_exp[i] = {}
             mapped_tags = tag_ref_detail[i].keys()
@@ -141,7 +119,7 @@ class Stat(object):
                     ref_counts = sum([self.tag.tag_count_dict[xx] for xx in ref_tag_detail[i][ref]])
                     ref_exp[i][ref] = ref_counts
             else:
-                mir_exp_dict = self.get_true_miRexp(tag_ref_detail[i], ref_tag_detail[i], mature_miRNA)
+                mir_exp_dict = self.get_true_miRexp(tag_ref_detail[i], ref_tag_detail[i])
                 ref_exp[i] = mir_exp_dict
         return (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail)
 
