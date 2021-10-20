@@ -6,9 +6,6 @@ sys.path.append("../EVAtool")
 
 
 def test_config():
-    """Test the config file."""
-    print(sys.path)
-
     from evatool.utils.config import Config
 
     config = Config()
