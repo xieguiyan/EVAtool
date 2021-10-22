@@ -55,27 +55,66 @@ class Stat(object):
                     mir_exp_dict[j] = tag_count
         return mir_exp_dict
 
+    def get_edit_distance_test(self, split2):
+        re_edit = re.compile(r"NM:i:(\d)")
+        m = re_edit.search(split2)
+        if m:
+            mapped_distance = int(m.group(1))
+        else:
+            mapped_distance = 0
+        return mapped_distance
+
+    def get_mismatch(self, split2, mapped_start):
+        re_mis = re.compile(r"MD:Z:(\d+)[A-Z]?(\d*)")
+        mis_str = re_mis.search(split2)
+        mismatch_loci = int(mis_str.group(1)) + int(mapped_start) - 1
+        return mismatch_loci
+
+    # def load_samfile(self):
+    #     d = {"tag": [], "ref": [], "mapped_distance": []}
+    #     with open(self.filepath, "r") as fh:
+    #         for line in fh:
+    #             line = line.strip()
+    #             if line.startswith("@"):
+    #                 continue
+    #             split1, split2 = re.split(pattern="\t*IIII*\t", string=line)
+    #             tag, flag, ref, start, cigar = [split1.split(sep="\t")[i] for i in [0, 1, 2, 3, 5]]
+    #             if flag != "0":
+    #                 continue
+    #             mapped_distance = self.get_edit_distance(split2=split2)
+    #             if mapped_distance > 1:
+    #                 continue
+    #             d["tag"].append(tag)
+    #             d["ref"].append(ref),
+    #             d["mapped_distance"].append(mapped_distance)
+    #     return pd.DataFrame(d)
+
     def get_edit_distance(self):
         mapped_nc_tag_dict = {}
         tag_ref_detail = {}
         ref_tag_detail = {}
-        distance_re = re.compile(r"NM:i:(\d)")
-        mismatch_pattern = re.compile(r"MD:Z:(\d+)[A-Z]?(\d*)")
+        # distance_re = re.compile(r"NM:i:(\d)")
+        # mismatch_pattern = re.compile(r"MD:Z:(\d+)[A-Z]?(\d*)")
         for n, i in enumerate(self.fastq.ncrna_lst):
             tag_ref_detail[i] = {}
             ref_tag_detail[i] = {}
             with open(f"{self.samprefix}.{i}.sam", "r") as sf:
                 for j in sf:
                     line = j.strip().split("\t")
-                    if line[1] != "0":
+                    split1, split2 = re.split(pattern="\t*IIII*\t", string=j)
+                    tag_name, flag, mapped_ref, mapped_start, cigar = [split1.split(sep="\t")[i] for i in [0, 1, 2, 3, 5]]
+                    if tag_name.startswith("@"):
                         continue
-                    (tag_name, mapping_detail, mapped_ref) = line[0:3]
-                    if distance_re.search(line[-1]):
-                        mapped_distance = int(distance_re.search(line[-1]).group(1))
-                    else:
-                        mapped_distance = 0
-                    if tag_name.startswith("@") or mapped_distance > 1:
+                    if flag != "0":
                         continue
+                    # tag_name, mapped_ref = line[0], line[2]
+                    # if distance_re.search(split2):
+                    #     mapped_distance = int(distance_re.search(split2).group(1))
+                    # else:
+                    #     mapped_distance = 0
+                    mapped_distance = self.get_edit_distance_test(split2)
+                    # if tag_name.startswith("@") or mapped_distance > 1:
+                    #     continue
                     if n:
                         if tag_name in mapped_nc_tag_dict:
                             continue
@@ -84,12 +123,13 @@ class Stat(object):
                         arm = "3p"
                         if self.fastq.config.hairpin_info[line[2]][-1] - int(line[3]) * 2 - len(line[9]) + 1 > 0:
                             arm = "5p"
-                        mapped_start = int(line[3])
+                        # mapped_start = int(line[3])
                         if mapped_distance:
                             discard_flag = 0
-                            mismatch_detail = mismatch_pattern.search(line[-2])
-                            mismatch_loci = int(mismatch_detail.group(1)) + mapped_start - 1
-                            mir_seed_regions = [(z[1] + 1, z[1] + 7) for z in self.fastq.config.mature_miRNA[line[2]].values()]
+                            # mismatch_detail = mismatch_pattern.search(split2)
+                            # mismatch_loci = int(mismatch_detail.group(1)) + mapped_start - 1
+                            mismatch_loci = self.get_mismatch(split2=split2, mapped_start=mapped_start)
+                            mir_seed_regions = [(z[1] + 1, z[1] + 7) for z in self.fastq.config.mature_miRNA[mapped_ref].values()]
                             for region in mir_seed_regions:
                                 if region[0] <= mismatch_loci <= region[1]:
                                     discard_flag = 1
@@ -102,9 +142,6 @@ class Stat(object):
                     ref_tag_detail[i].setdefault(mapped_ref, set()).add(tag_name)
                     mapped_nc_tag_dict[tag_name] = i
         return tag_ref_detail, ref_tag_detail, mapped_nc_tag_dict
-
-    def get_mismatch(self):
-        pass
 
     def get_ncRNAs_exp(self):
         ref_exp = {}
