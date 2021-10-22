@@ -70,6 +70,15 @@ class Stat(object):
         mismatch_loci = int(mis_str.group(1)) + int(mapped_start) - 1
         return mismatch_loci
 
+    def get_discard_flag(self, split2, mapped_start, mapped_ref):
+        discard_flag = 0
+        mismatch_loci = self.get_mismatch(split2=split2, mapped_start=mapped_start)
+        mir_seed_regions = [(z[1] + 1, z[1] + 7) for z in self.fastq.config.mature_miRNA[mapped_ref].values()]
+        for region in mir_seed_regions:
+            if region[0] <= mismatch_loci <= region[1]:
+                discard_flag = 1
+        return discard_flag
+
     def get_edit_distance(self):
         mapped_nc_tag_dict = {}
         tag_ref_detail = {}
@@ -96,12 +105,7 @@ class Stat(object):
                         if self.fastq.config.hairpin_info[line[2]][-1] - int(line[3]) * 2 - len(line[9]) + 1 > 0:
                             arm = "5p"
                         if mapped_distance:
-                            discard_flag = 0
-                            mismatch_loci = self.get_mismatch(split2=split2, mapped_start=mapped_start)
-                            mir_seed_regions = [(z[1] + 1, z[1] + 7) for z in self.fastq.config.mature_miRNA[mapped_ref].values()]
-                            for region in mir_seed_regions:
-                                if region[0] <= mismatch_loci <= region[1]:
-                                    discard_flag = 1
+                            discard_flag = self.get_discard_flag(split2, mapped_start, mapped_ref)
                             if discard_flag:
                                 continue
                         try:
