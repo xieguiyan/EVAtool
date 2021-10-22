@@ -70,31 +70,10 @@ class Stat(object):
         mismatch_loci = int(mis_str.group(1)) + int(mapped_start) - 1
         return mismatch_loci
 
-    # def load_samfile(self):
-    #     d = {"tag": [], "ref": [], "mapped_distance": []}
-    #     with open(self.filepath, "r") as fh:
-    #         for line in fh:
-    #             line = line.strip()
-    #             if line.startswith("@"):
-    #                 continue
-    #             split1, split2 = re.split(pattern="\t*IIII*\t", string=line)
-    #             tag, flag, ref, start, cigar = [split1.split(sep="\t")[i] for i in [0, 1, 2, 3, 5]]
-    #             if flag != "0":
-    #                 continue
-    #             mapped_distance = self.get_edit_distance(split2=split2)
-    #             if mapped_distance > 1:
-    #                 continue
-    #             d["tag"].append(tag)
-    #             d["ref"].append(ref),
-    #             d["mapped_distance"].append(mapped_distance)
-    #     return pd.DataFrame(d)
-
     def get_edit_distance(self):
         mapped_nc_tag_dict = {}
         tag_ref_detail = {}
         ref_tag_detail = {}
-        # distance_re = re.compile(r"NM:i:(\d)")
-        # mismatch_pattern = re.compile(r"MD:Z:(\d+)[A-Z]?(\d*)")
         for n, i in enumerate(self.fastq.ncrna_lst):
             tag_ref_detail[i] = {}
             ref_tag_detail[i] = {}
@@ -102,19 +81,12 @@ class Stat(object):
                 for j in sf:
                     line = j.strip().split("\t")
                     split1, split2 = re.split(pattern="\t*IIII*\t", string=j)
-                    tag_name, flag, mapped_ref, mapped_start, cigar = [split1.split(sep="\t")[i] for i in [0, 1, 2, 3, 5]]
-                    if tag_name.startswith("@"):
-                        continue
+                    tag_name, flag, mapped_ref, mapped_start = [split1.split(sep="\t")[i] for i in [0, 1, 2, 3]]
                     if flag != "0":
                         continue
-                    # tag_name, mapped_ref = line[0], line[2]
-                    # if distance_re.search(split2):
-                    #     mapped_distance = int(distance_re.search(split2).group(1))
-                    # else:
-                    #     mapped_distance = 0
                     mapped_distance = self.get_edit_distance_test(split2)
-                    # if tag_name.startswith("@") or mapped_distance > 1:
-                    #     continue
+                    if tag_name.startswith("@") or mapped_distance > 1:
+                        continue
                     if n:
                         if tag_name in mapped_nc_tag_dict:
                             continue
@@ -123,11 +95,8 @@ class Stat(object):
                         arm = "3p"
                         if self.fastq.config.hairpin_info[line[2]][-1] - int(line[3]) * 2 - len(line[9]) + 1 > 0:
                             arm = "5p"
-                        # mapped_start = int(line[3])
                         if mapped_distance:
                             discard_flag = 0
-                            # mismatch_detail = mismatch_pattern.search(split2)
-                            # mismatch_loci = int(mismatch_detail.group(1)) + mapped_start - 1
                             mismatch_loci = self.get_mismatch(split2=split2, mapped_start=mapped_start)
                             mir_seed_regions = [(z[1] + 1, z[1] + 7) for z in self.fastq.config.mature_miRNA[mapped_ref].values()]
                             for region in mir_seed_regions:
