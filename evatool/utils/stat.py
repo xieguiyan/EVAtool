@@ -282,13 +282,7 @@ class Stat(object):
             self.fastq.log.log("calcultion for expression of {i} completed")
         ncRNA_exp_stat.close()
 
-    def stat_match(self):
-        (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail) = self.get_ncRNAs_exp()
-        # total_counts = sum(self.tag.tag_count_dict.values())
-        (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = self.deal_mapped_info(mapped_nc_tag_dict, ref_exp)
-        un_mapped_tag = set(self.tag.tag_count_dict.keys()) - map_to_genome_tags
-        self.stat_ncRNA_exp(map_to_genome_tags, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail)
-        # tag_mapped_genome_catagory = f"{self.samprefix}.tag.genome.classification"
+    def tag_genome_classfication(self, new_anno_tag_detail):
         tag_mapped_genome_catagory_handle = open(f"{self.samprefix}.tag.genome.classification", "w")
         tag_mapped_genome_catagory_handle.write("TagId\tTagCount\tGenebody\tOpposite\n")
         for tag in new_anno_tag_detail:
@@ -303,7 +297,8 @@ class Stat(object):
                 tag_mapped_genome_catagory_handle.write("\t" + out_mapped_items)
             tag_mapped_genome_catagory_handle.write("\n")
         self.fastq.log.log("ncRNA expression analysis completed")
-        # region_mapped_genome_catagory = f"{self.samprefix}.region.anno.genome.classification"
+
+    def region_anno_genome_classification(self, region_anno_detail):
         region_mapped_genome_catagory_handle = open(f"{self.samprefix}.region.anno.genome.classification", "w")
         region_mapped_genome_catagory_handle.write("GenomeRegion\tGeneBody\tOpposite\n")
         for region in region_anno_detail:
@@ -313,12 +308,9 @@ class Stat(object):
                 region_mamped_info = ";".join(region_anno[strand]) if strand in region_anno else "-"
                 region_mapped_genome_catagory_handle.write("\t" + region_mamped_info)
             region_mapped_genome_catagory_handle.write("\n")
-        # region_unanno_file = f"{self.samprefix}.region.unanno.genome.classification"
-        region_unanno_file_handle = open(f"{self.samprefix}.region.unanno.genome.classification", "w")
-        region_unanno_file_handle.write("Chromosome\tStart\tEnd\tStrand\tTags\tTotalCount\tMean\n")
-        for chr_region in rebuilt_unanno_info:
-            region_unanno_file_handle.write(chr_region)
-        # tag_unmapped = f"{self.samprefix}.tag.unmapped"
+
+    def tag_unmapped(self, map_to_genome_tags):
+        un_mapped_tag = set(self.tag.tag_count_dict.keys()) - map_to_genome_tags
         tag_unmapped_handle = open(f"{self.samprefix}.tag.unmapped", "w")
         with open(f"{self.samprefix}.fa", "r") as tmp_f:
             out_flag = 0
@@ -332,4 +324,58 @@ class Stat(object):
                     tag_unmapped_handle.write(tmp_line)
                     out_flag = 0
         self.fastq.log.log("Genome annotation completed!")
+
+    def stat_match(self):
+        (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail) = self.get_ncRNAs_exp()
+        # total_counts = sum(self.tag.tag_count_dict.values())
+        (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = self.deal_mapped_info(mapped_nc_tag_dict, ref_exp)
+        # un_mapped_tag = set(self.tag.tag_count_dict.keys()) - map_to_genome_tags
+        self.stat_ncRNA_exp(map_to_genome_tags, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail)
+        self.tag_genome_classfication(new_anno_tag_detail)
+        self.region_anno_genome_classification(region_anno_detail)
+        # tag_mapped_genome_catagory = f"{self.samprefix}.tag.genome.classification"
+        # tag_mapped_genome_catagory_handle = open(f"{self.samprefix}.tag.genome.classification", "w")
+        # tag_mapped_genome_catagory_handle.write("TagId\tTagCount\tGenebody\tOpposite\n")
+        # for tag in new_anno_tag_detail:
+        #     tag_count = self.tag.tag_count_dict[tag]
+        #     tag_anno_info = new_anno_tag_detail[tag]
+        #     tag_mapped_genome_catagory_handle.write(tag + "\t" + str(tag_count))
+        #     for strand in ["genebody", "opposite"]:
+        #         if strand in tag_anno_info:
+        #             out_mapped_items = ";".join(tag_anno_info[strand])
+        #         else:
+        #             out_mapped_items = "-"
+        #         tag_mapped_genome_catagory_handle.write("\t" + out_mapped_items)
+        #     tag_mapped_genome_catagory_handle.write("\n")
+        # self.fastq.log.log("ncRNA expression analysis completed")
+        # region_mapped_genome_catagory = f"{self.samprefix}.region.anno.genome.classification"
+        # region_mapped_genome_catagory_handle = open(f"{self.samprefix}.region.anno.genome.classification", "w")
+        # region_mapped_genome_catagory_handle.write("GenomeRegion\tGeneBody\tOpposite\n")
+        # for region in region_anno_detail:
+        #     region_anno = region_anno_detail[region]
+        #     region_mapped_genome_catagory_handle.write(region)
+        #     for strand in ["genebody", "opposite"]:
+        #         region_mamped_info = ";".join(region_anno[strand]) if strand in region_anno else "-"
+        #         region_mapped_genome_catagory_handle.write("\t" + region_mamped_info)
+        #     region_mapped_genome_catagory_handle.write("\n")
+        # region_unanno_file = f"{self.samprefix}.region.unanno.genome.classification"
+        region_unanno_file_handle = open(f"{self.samprefix}.region.unanno.genome.classification", "w")
+        region_unanno_file_handle.write("Chromosome\tStart\tEnd\tStrand\tTags\tTotalCount\tMean\n")
+        for chr_region in rebuilt_unanno_info:
+            region_unanno_file_handle.write(chr_region)
+        self.tag_unmapped(map_to_genome_tags)
+        # tag_unmapped = f"{self.samprefix}.tag.unmapped"
+        # tag_unmapped_handle = open(f"{self.samprefix}.tag.unmapped", "w")
+        # with open(f"{self.samprefix}.fa", "r") as tmp_f:
+        #     out_flag = 0
+        #     for tmp_line in tmp_f:
+        #         if tmp_line.startswith(">"):
+        #             tag_line = tmp_line.strip(">\n").split("\t")
+        #             if tag_line[0] in un_mapped_tag:
+        #                 tag_unmapped_handle.write(tmp_line)
+        #                 out_flag = 1
+        #         elif out_flag:
+        #             tag_unmapped_handle.write(tmp_line)
+        #             out_flag = 0
+        # self.fastq.log.log("Genome annotation completed!")
         # nes.close()
