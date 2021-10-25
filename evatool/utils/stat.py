@@ -139,16 +139,11 @@ class Stat(object):
         else:
             return dict([(key, dct.get(key)) for key in dct.keys() - keys])
 
-    def deal_mapped_info(self, mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp):
-        mapped_anno_bed = f"{self.samprefix}.genome.annotation.info"
+    def deal_mapped_unanno_info(self, mapped_nc_tag_dict, ref_exp, un_annotated_tags):
         mapped_unanno_bed = f"{self.samprefix}.genome.unanno.info"
-        details_mapped_tag = {}
         map_to_genome_tags = set()
-        new_anno_tag_detail = {}
-        region_anno_detail = {}
-        rebuilt_unanno_info = []
         tmp_anno = []
-        un_annotated_tags = copy.deepcopy(un_annotated_tags_nc)
+        rebuilt_unanno_info = []
         with open(mapped_unanno_bed, "r") as uf:
             for i in uf:
                 line = i.strip().split("\t")
@@ -170,6 +165,40 @@ class Stat(object):
                 else:
                     rebuilt_unanno_info.append(i)
             un_annotated_tags = self.sub_dict_modify(un_annotated_tags, set(tmp_anno), 2)
+        return map_to_genome_tags, un_annotated_tags, mapped_nc_tag_dict
+
+    def deal_mapped_info(self, mapped_nc_tag_dict, ref_exp):
+        mapped_anno_bed = f"{self.samprefix}.genome.annotation.info"
+        # mapped_unanno_bed = f"{self.samprefix}.genome.unanno.info"
+        details_mapped_tag = {}
+        map_to_genome_tags = set()
+        new_anno_tag_detail = {}
+        region_anno_detail = {}
+        rebuilt_unanno_info = []
+        # tmp_anno = []
+        un_annotated_tags_nc = {tag_id: self.tag.tag_count_dict[tag_id] for tag_id in self.tag.tag_count_dict if tag_id not in mapped_nc_tag_dict}
+        un_annotated_tags = copy.deepcopy(un_annotated_tags_nc)
+        # with open(mapped_unanno_bed, "r") as uf:
+        #     for i in uf:
+        #         line = i.strip().split("\t")
+        #         tags_id = line[4].strip().split(",")
+        #         map_to_genome_tags.update(tags_id)
+        #         tags_in_nc = [tag_id for tag_id in tags_id if tag_id in mapped_nc_tag_dict]
+        #         tag_type_lst = [mapped_nc_tag_dict[tag] for tag in tags_in_nc]
+        #         if tags_in_nc:
+        #             tag_type_counter = Counter(tag_type_lst)
+        #             sorted_tag_type_counter = sorted(tag_type_counter.keys(), key=lambda a: tag_type_counter[a], reverse=True)
+        #             tag_type = sorted_tag_type_counter[0]
+        #             if "other" in ref_exp[tag_type]:
+        #                 ref_exp[tag_type]["other"] += sum([self.tag.tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
+        #             else:
+        #                 ref_exp[tag_type]["other"] = sum([self.tag.tag_count_dict[t_z] for t_z in tags_id if t_z not in mapped_nc_tag_dict])
+        #             tmp_anno.extend(tags_id)
+        #             for t_z in tags_id:
+        #                 mapped_nc_tag_dict[t_z] = tag_type
+        #         else:
+        #             rebuilt_unanno_info.append(i)
+        #     un_annotated_tags = self.sub_dict_modify(un_annotated_tags, set(tmp_anno), 2)
         with open(mapped_anno_bed, "r") as mf:
             anno_c_set = []
             new_anno_tags = set()
@@ -233,8 +262,8 @@ class Stat(object):
     def stat_match(self):
         (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail) = self.get_ncRNAs_exp()
         total_counts = sum(self.tag.tag_count_dict.values())
-        un_annotated_tags_nc = {tag_id: self.tag.tag_count_dict[tag_id] for tag_id in self.tag.tag_count_dict if tag_id not in mapped_nc_tag_dict}
-        (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = self.deal_mapped_info(mapped_nc_tag_dict, un_annotated_tags_nc, ref_exp)
+        # un_annotated_tags_nc = {tag_id: self.tag.tag_count_dict[tag_id] for tag_id in self.tag.tag_count_dict if tag_id not in mapped_nc_tag_dict}
+        (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = self.deal_mapped_info(mapped_nc_tag_dict, ref_exp)
         un_mapped_tag = set(self.tag.tag_count_dict.keys()) - map_to_genome_tags
         ncRNA_exp_stat = f"{self.samprefix}.stat"
         tag_mapped_catagory = f"{self.samprefix}.tag.ncRNA.classification"
