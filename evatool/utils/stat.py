@@ -140,18 +140,18 @@ class Stat(object):
             return dict([(key, dct.get(key)) for key in dct.keys() - keys])
 
     def deal_mapped_unanno_info(self, mapped_nc_tag_dict, ref_exp, un_annotated_tags):
-        mapped_unanno_bed = f"{self.samprefix}.genome.unanno.info"
         map_to_genome_tags = set()
         tmp_anno = []
         rebuilt_unanno_info = []
-        with open(mapped_unanno_bed, "r") as uf:
+        with open(f"{self.samprefix}.genome.unanno.info", "r") as uf:
             for i in uf:
                 line = i.strip().split("\t")
                 tags_id = line[4].strip().split(",")
                 map_to_genome_tags.update(tags_id)
                 tags_in_nc = [tag_id for tag_id in tags_id if tag_id in mapped_nc_tag_dict]
-                tag_type_lst = [mapped_nc_tag_dict[tag] for tag in tags_in_nc]
+                # tag_type_lst = [mapped_nc_tag_dict[tag] for tag in tags_in_nc]
                 if tags_in_nc:
+                    tag_type_lst = [mapped_nc_tag_dict[tag] for tag in tags_in_nc]
                     tag_type_counter = Counter(tag_type_lst)
                     sorted_tag_type_counter = sorted(tag_type_counter.keys(), key=lambda a: tag_type_counter[a], reverse=True)
                     tag_type = sorted_tag_type_counter[0]
@@ -165,7 +165,7 @@ class Stat(object):
                 else:
                     rebuilt_unanno_info.append(i)
             un_annotated_tags = self.sub_dict_modify(un_annotated_tags, set(tmp_anno), 2)
-        return map_to_genome_tags, un_annotated_tags, mapped_nc_tag_dict
+        return map_to_genome_tags, un_annotated_tags, mapped_nc_tag_dict, ref_exp, rebuilt_unanno_info
 
     def deal_mapped_anno_info(self, un_annotated_tags, map_to_genome_tags, mapped_nc_tag_dict, ref_exp):
         mapped_anno_bed = f"{self.samprefix}.genome.annotation.info"
@@ -203,7 +203,7 @@ class Stat(object):
                     details_mapped_tag.setdefault(mapped_info[4], {})[strand] = [ref_gene_info]
                     details_mapped_tag[mapped_info[4]]["l"] = mapped_info
             un_annotated_tags = self.sub_dict_modify(un_annotated_tags, new_anno_tags, 2)
-        return details_mapped_tag
+        return details_mapped_tag, map_to_genome_tags, un_annotated_tags, ref_exp
 
     def deal_mapped_info(self, mapped_nc_tag_dict, ref_exp):
         map_to_genome_tags = set()
@@ -212,8 +212,8 @@ class Stat(object):
         rebuilt_unanno_info = []
         un_annotated_tags_nc = {tag_id: self.tag.tag_count_dict[tag_id] for tag_id in self.tag.tag_count_dict if tag_id not in mapped_nc_tag_dict}
         un_annotated_tags = copy.deepcopy(un_annotated_tags_nc)
-        (map_to_genome_tags, un_annotated_tags, mapped_nc_tag_dict) = self.deal_mapped_unanno_info(mapped_nc_tag_dict, ref_exp, un_annotated_tags)
-        (details_mapped_tag) = self.deal_mapped_anno_info(un_annotated_tags, map_to_genome_tags, mapped_nc_tag_dict, ref_exp)
+        (map_to_genome_tags, un_annotated_tags, mapped_nc_tag_dict, ref_exp, rebuilt_unanno_info) = self.deal_mapped_unanno_info(mapped_nc_tag_dict, ref_exp, un_annotated_tags)
+        (details_mapped_tag, map_to_genome_tags, un_annotated_tags, ref_exp) = self.deal_mapped_anno_info(un_annotated_tags, map_to_genome_tags, mapped_nc_tag_dict, ref_exp)
         for tags in details_mapped_tag:
             strand_lst = ["genebody", "opposite"]
             tag_anno_dict = dict([(z, "-") for z in strand_lst])
@@ -232,14 +232,12 @@ class Stat(object):
                     print(strand_flag)
                     print(ref_lst)
                     sys.exit()
-
-                # chr1    585988  827796  ENSG00000230021 .       -       RP5-857K21.4    ensembl_havana  lincRNA
                 out_tmp_lst = [":".join([a[-1], a[3], a[6]]) for a in tmp_lst]
                 tag_anno_dict[strand_flag] = out_tmp_lst
             for tag in tag_ids:
                 new_anno_tag_detail[tag] = tag_anno_dict
             region_anno_detail[":".join(mapped_info)] = tag_anno_dict
-        return (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags)
+        return (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, ref_exp)
 
     def stat_ncRNA_exp(self, map_to_genome_tags, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail) -> None:
         total_counts = sum(self.tag.tag_count_dict.values())
@@ -327,7 +325,7 @@ class Stat(object):
 
     def stat_match(self):
         (ref_exp, mapped_ncRNA_counts, mapped_nc_tag_dict, ref_tag_detail) = self.get_ncRNAs_exp()
-        (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, un_annotated_tags) = self.deal_mapped_info(mapped_nc_tag_dict, ref_exp)
+        (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, ref_exp) = self.deal_mapped_info(mapped_nc_tag_dict, ref_exp)
         self.stat_ncRNA_exp(map_to_genome_tags, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail)
         self.tag_genome_classfication(new_anno_tag_detail)
         self.region_anno_genome_classification(region_anno_detail)
