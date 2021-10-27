@@ -239,19 +239,15 @@ class Stat(object):
             region_anno_detail[":".join(mapped_info)] = tag_anno_dict
         return (map_to_genome_tags, new_anno_tag_detail, region_anno_detail, rebuilt_unanno_info, ref_exp)
 
-    def stat_each_ncRNA_exp(self, i, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail, total_mapped_tags_sum, exp_cal_category):
+    def stat_each_ncRNA_exp(self, i, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail, total_mapped_tags_sum, exp_cal_category) -> None:
         total_mapped_nc_tags_sum = sum([self.tag.tag_count_dict[j] for j in mapped_nc_tag_dict])
         function_nc_tags_sum_ori = sum([mapped_ncRNA_counts.get(j, 0) for j in self.function_ncRNA_lst])
         exp_cal_method = {"total": total_mapped_tags_sum, "ncRNAall": total_mapped_nc_tags_sum, "func": function_nc_tags_sum_ori}
         ncRNA_exp_file = open(f"{self.samprefix}.{i}.exp", "w")
         ncRNA_exp_file.write("GeneSymbol\tTagCount\tRPM\n")
-        nc_counts_sum = sum([ref_exp[i][j] for j in ref_exp[i] if j != "other"])
         tag_mapped_catagory_handle = open(f"{self.samprefix}.tag.ncRNA.classification", "w")
         tag_mapped_catagory_handle.write("TagId\tTagCount\tCategory\tMappedItem\tRegion\n")
-        if exp_cal_category == "ncRNAtype":
-            exp_cal_method["ncRNAtype"] = nc_counts_sum
         for j in ref_exp[i]:
-            tmp_nc_counts = 0
             if j == "other":
                 continue
             if j in ref_tag_detail[i]:
@@ -259,49 +255,22 @@ class Stat(object):
                 for t in tmp_mapped_tags:
                     tmp_tag_count = self.tag.tag_count_dict[t]
                     tag_mapped_catagory_handle.write(t + "\t" + str(tmp_tag_count) + "\t" + i + "\t" + j + "\treference\n")
-            tmp_nc_counts = ref_exp[i][j]
-            nc_exp = tmp_nc_counts / exp_cal_method[exp_cal_category] * 1000000
-            ncRNA_exp_file.write("{0}\t{1:d}\t{2:.2f}\n".format(j, tmp_nc_counts, nc_exp))
+            nc_exp = ref_exp[i][j] / exp_cal_method[exp_cal_category] * 1000000
+            ncRNA_exp_file.write("{0}\t{1:d}\t{2:.2f}\n".format(j, ref_exp[i][j], nc_exp))
         ncRNA_exp_file.close()
-        return nc_counts_sum
 
     def stat_ncRNA_exp(self, map_to_genome_tags, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail) -> None:
         total_counts = sum(self.tag.tag_count_dict.values())
-        # tag_mapped_catagory_handle = open(f"{self.samprefix}.tag.ncRNA.classification", "w")
-        # tag_mapped_catagory_handle.write("TagId\tTagCount\tCategory\tMappedItem\tRegion\n")
         ncRNA_exp_stat = open(f"{self.samprefix}.stat", "w")
         total_mapped_tags_sum = sum([self.tag.tag_count_dict[j] for j in map_to_genome_tags])
-        # total_mapped_nc_tags_sum = sum([self.tag.tag_count_dict[j] for j in mapped_nc_tag_dict])
-        # function_nc_tags_sum_ori = sum([mapped_ncRNA_counts.get(j, 0) for j in self.function_ncRNA_lst])
         total_mapped_tags_ratio = total_mapped_tags_sum / total_counts * 100
-        ncRNA_exp_stat.write(f"#Total counts: {total_counts}\n")
-        ncRNA_exp_stat.write(f"#Total mapped counts: {total_mapped_tags_sum}({total_mapped_tags_ratio:.2f}%)\n")
-        ncRNA_exp_stat.write(f"#Unmapped tags: {total_counts - total_mapped_tags_sum}({100 - total_mapped_tags_ratio:.2f}%)\n")
-        ncRNA_exp_stat.write("#Category\tMappedTag\tRatio\n")
+        ncRNA_exp_stat.write(f"#Total counts: {total_counts}\n#Total mapped counts: {total_mapped_tags_sum}({total_mapped_tags_ratio:.2f}%)\n")
+        ncRNA_exp_stat.write(f"#Unmapped tags: {total_counts - total_mapped_tags_sum}({100 - total_mapped_tags_ratio:.2f}%)\n#Category\tMappedTag\tRatio\n")
         exp_cal_category = self.fastq.config.config["RPM"]
-        ncRNA_type_list = {"total": self.fastq.ncrna_lst, "ncRNAall": self.fastq.ncrna_lst, "func": self.function_ncRNA_lst, "ncRNAtype": self.fastq.ncrna_lst}
-        # exp_cal_method = {"total": total_mapped_tags_sum, "ncRNAall": total_mapped_nc_tags_sum, "func": function_nc_tags_sum_ori}
+        ncRNA_type_list = {"total": self.fastq.ncrna_lst, "func": self.function_ncRNA_lst}
         for n, i in enumerate(ncRNA_type_list[exp_cal_category]):
-            nc_counts_sum = self.stat_each_ncRNA_exp(i, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail, total_mapped_tags_sum, exp_cal_category)
-            # ncRNA_exp_file = f"{self.samprefix}.{i}.exp"
-            # ncRNA_exp_file = open(f"{self.samprefix}.{i}.exp", "w")
-            # ncRNA_exp_file.write("GeneSymbol\tTagCount\tRPM\n")
-            # nc_counts_sum = sum([ref_exp[i][j] for j in ref_exp[i] if j != "other"])
-            # if exp_cal_category == "ncRNAtype":
-            #     exp_cal_method["ncRNAtype"] = nc_counts_sum
-            # for j in ref_exp[i]:
-            #     tmp_nc_counts = 0
-            #     if j == "other":
-            #         continue
-            #     if j in ref_tag_detail[i]:
-            #         tmp_mapped_tags = ref_tag_detail[i][j] if j in ref_tag_detail[i] else []
-            #         for t in tmp_mapped_tags:
-            #             tmp_tag_count = self.tag.tag_count_dict[t]
-            #             tag_mapped_catagory_handle.write(t + "\t" + str(tmp_tag_count) + "\t" + i + "\t" + j + "\treference\n")
-            #     tmp_nc_counts = ref_exp[i][j]
-            #     nc_exp = tmp_nc_counts / exp_cal_method[exp_cal_category] * 1000000
-            #     ncRNA_exp_file.write("{0}\t{1:d}\t{2:.2f}\n".format(j, tmp_nc_counts, nc_exp))
-            # ncRNA_exp_file.close()
+            self.stat_each_ncRNA_exp(i, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail, total_mapped_tags_sum, exp_cal_category)
+            nc_counts_sum = sum([ref_exp[i][j] for j in ref_exp[i] if j != "other"])
             ncRNA_exp_stat.write("{0}\t{1:d}\t{2:.2f}%\n".format(i, nc_counts_sum, nc_counts_sum / total_mapped_tags_sum * 100))
             self.fastq.log.log("calcultion for expression of {i} completed")
         ncRNA_exp_stat.close()
