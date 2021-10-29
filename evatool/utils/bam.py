@@ -6,30 +6,23 @@
 # @DESCRIPTION:
 
 from .fastq import Fastq
+from .tag import Tag
 import subprocess
 
 
 class Bam(object):
-    def __init__(self, fastq: Fastq):
+    def __init__(self, fastq: Fastq, tag: Tag):
         self.fastq = fastq
+        self.tag = tag
         self.fileprefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
 
-    def load_tagfa(self):
-        tag_fa_dict = {}
-        for i in open(f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa", "r").readlines():
-            if i.startswith(">"):
-                line = i.strip().split("\t")
-                tag_fa_dict[line[0].strip(">")] = line[1]
-        return tag_fa_dict
-
     def bed_count(self):
-        tag_fa_dict = self.load_tagfa()
         out_genome_sort_bed_count_handle = open(f"{self.fileprefix}.genome.sort.bed.count", "w")
         with open(f"{self.fileprefix}.genome.sort.bed", "r") as bf:
             for j in bf:
                 line = j.strip().split("\t")
-                tag_name = line[3]
-                tag_count = tag_fa_dict[tag_name]
+                # tag_name = line[3]
+                tag_count = self.tag.tag_count_dict[line[3]]
                 line[4] = str(tag_count)
                 out_genome_sort_bed_count_handle.write("\t".join(line) + "\n")
         out_genome_sort_bed_count_handle.close()
@@ -84,7 +77,7 @@ class Bam(object):
         return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     def process_bam(self):
-        if self.load_tagfa():
+        if self.tag.tag_count_dict:
             self.bed_count()
             merge = self.bed_merge()
             if merge.returncode == 0:
