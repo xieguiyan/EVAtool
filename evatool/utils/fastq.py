@@ -24,6 +24,9 @@ class Fastq(object):
     def is_sra(self):
         return True if self.inputfile.suffix == ".sra" else False
 
+    def is_fastq(self):
+        return True if (self.inputfile.suffix == ".fastq" or self.inputfile.suffix == ".fastq.gz") else False
+
     def dump_fastq(self):
         cmd = [self.config.config["fastqdump"], "--dumpbase", "--gzip", "--split-files", "-O", self.outputdir, self.inputfile]
         return subprocess.run(cmd)
@@ -38,12 +41,17 @@ class Fastq(object):
         if self.is_sra():
             rc = self.dump_fastq()
             if rc.returncode == 0:
+                runtrim = self.trim()
+                if runtrim.returncode == 0:
+                    self.log.log(message=f"Success in trimm {self.inputfile.stem} fastq file")
+                else:
+                    self.log.log(message=f"Error in trimm {self.inputfile.stem} fastq file")
                 self.log.log(message=f"Success in dump SRA file {self.inputfile.stem} to fastq")
             else:
                 self.log.log(message=f"Error in dump SRA file {self.inputfile.stem} to fastq")
-
-        runtrim = self.trim()
-        if runtrim.returncode == 0:
-            self.log.log(message=f"Success in trimm {self.inputfile.stem} fastq file")
-        else:
-            self.log.log(message=f"Error in trimm {self.inputfile.stem} fastq file")
+        elif self.is_fastq():
+            runtrim = self.trim()
+            if runtrim.returncode == 0:
+                self.log.log(message=f"Success in trimm {self.inputfile.stem} fastq file")
+            else:
+                self.log.log(message=f"Error in trimm {self.inputfile.stem} fastq file")
