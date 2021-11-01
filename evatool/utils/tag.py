@@ -39,6 +39,7 @@ class Tag(object):
 
     def store_tag(self, sorted_tag_number, tag_dict):
         fq_len_frequency_dict = {}
+        tag_count = {}
         reads_n = 0
         out_reads_n = 0
         with open(self.tagfile, "w") as tf:
@@ -55,6 +56,7 @@ class Tag(object):
                 if seq_count > 1:
                     out_reads_n += seq_count
                     tf.write(f">{tag_number}\t{seq_count:d}\n{line}\n")
+                    # tag_count[tag_number] = int(seq_count)
         return fq_len_frequency_dict, reads_n, out_reads_n
 
     def store_freq(self, fq_len_frequency_dict, reads_n, out_reads_n):
