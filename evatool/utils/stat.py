@@ -206,10 +206,10 @@ class Stat(object):
         return details_mapped_tag, map_to_genome_tags, un_annotated_tags, ref_exp
 
     def deal_mapped_info(self, mapped_nc_tag_dict, ref_exp):
-        map_to_genome_tags = set()
+        # map_to_genome_tags = set()
         new_anno_tag_detail = {}
         region_anno_detail = {}
-        rebuilt_unanno_info = []
+        # rebuilt_unanno_info = []
         un_annotated_tags_nc = {tag_id: self.tag.tag_count_dict[tag_id] for tag_id in self.tag.tag_count_dict if tag_id not in mapped_nc_tag_dict}
         un_annotated_tags = copy.deepcopy(un_annotated_tags_nc)
         (map_to_genome_tags, un_annotated_tags, mapped_nc_tag_dict, ref_exp, rebuilt_unanno_info) = self.deal_mapped_unanno_info(mapped_nc_tag_dict, ref_exp, un_annotated_tags)
