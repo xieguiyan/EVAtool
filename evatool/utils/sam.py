@@ -16,7 +16,7 @@ class SAM(object):
         self.fastq = fastq
         self.samdir = Path(fastq.inputfile)
         self.tag_fa = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa"
-        self.ncrna_lst = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
+        self.ncrna_lst = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "YRNA"]
 
     def mapped_genome_anno(self) -> None:
         outputpre = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
