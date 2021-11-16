@@ -13,7 +13,7 @@ from .logger import Logger
 
 
 class Fastq(object):
-    def __init__(self, inputfile: Path, outputdir: Path, config: Config, log: Logger, ncrna_lst: list = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]):
+    def __init__(self, inputfile: Path, outputdir: Path, config: Config, log: Logger, ncrna_lst: list = ["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "YRNA"]):
         self.inputfile = Path(inputfile)
         self.outputdir = outputdir
         self.config = config
