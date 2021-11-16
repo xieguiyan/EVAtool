@@ -19,7 +19,7 @@ class Stat(object):
         self.tag = tag
         self.tag_fa = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}.fa"
         self.samprefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
-        self.function_ncRNA_lst = ["miRNA", "piRNA", "snoRNA", "snRNA", "scRNA"]
+        self.function_ncRNA_lst = ["miRNA", "piRNA", "snoRNA", "snRNA", "YRNA"]
 
     def get_true_miRexp(self, tag_ref_dict, hairpin_tag_dict):
         # divide_tag_expressoin_dict = {}
