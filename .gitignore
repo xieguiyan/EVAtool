@@ -153,3 +153,4 @@ test/tmp_result/*
 test/example-script/tag_annotation_exp_new_method.py
 test/example-script/tmp_script/*
 test/example-script/tag_annotation_exp_new_method.py
+test/test_plot_scripts/*.png
