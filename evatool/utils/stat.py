@@ -265,7 +265,7 @@ class Stat(object):
         total_mapped_tags_sum = sum([self.tag.tag_count_dict[j] for j in map_to_genome_tags])
         total_mapped_tags_ratio = total_mapped_tags_sum / total_counts * 100
         ncRNA_exp_stat.write(f"#Total counts: {total_counts}\n#Total mapped counts: {total_mapped_tags_sum}({total_mapped_tags_ratio:.2f}%)\n")
-        ncRNA_exp_stat.write(f"#Unmapped tags: {total_counts - total_mapped_tags_sum}({100 - total_mapped_tags_ratio:.2f}%)\n#Category\tMappedTag\tRatio\n")
+        ncRNA_exp_stat.write(f"#Unmapped tags: {total_counts - total_mapped_tags_sum}({100 - total_mapped_tags_ratio:.2f}%)\nCategory\tMappedTag\tRatio\n")
         exp_cal_category = self.fastq.config.config["RPM"]
         ncRNA_type_list = {"total": self.fastq.ncrna_lst, "func": self.function_ncRNA_lst}
         for n, i in enumerate(ncRNA_type_list[exp_cal_category]):
