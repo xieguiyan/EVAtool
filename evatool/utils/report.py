@@ -7,21 +7,21 @@
 
 from jinja2 import Environment, FileSystemLoader
 import datetime
-from .fastq import Fastq
 from pathlib import Path
 
 template_path = Path.cwd() / "evatool" / "resource"
 
 
 class Report:
-    def __init__(self, fastq: Fastq):
-        self.fastq = fastq
-        self.samprefix = f"{self.fastq.outputdir}/{self.fastq.inputfile.stem}"
+    def __init__(self, inputfile: Path, outputdir: Path):
+        self.inputfile = Path(inputfile)
+        self.outputdir = outputdir
+        self.samprefix = f"{self.outputdir}/{self.inputfile.stem}"
 
     def generate_html(self, body, body2, stoptime, img_path, img_path2):
         env = Environment(loader=FileSystemLoader(template_path))
         template = env.get_template("template_report.html")
-        with open(f"{self.fastq.outputdir}/Report_result.html", "w+") as fout:
+        with open(f"{self.outputdir}/Report_result.html", "w+") as fout:
             html_content = template.render(stop_time=stoptime, body=body, body2=body2, img_path=img_path, img_path2=img_path2)
             fout.write(html_content)
 
