@@ -79,7 +79,6 @@ class Tag(object):
 
     def get_tag_count(self):
         if Path(self.tagfile).exists():
-            print("Yes, tag file existed!")
             tag_count = {}
             with open(self.tagfile, "r") as f:
                 for i in f:
