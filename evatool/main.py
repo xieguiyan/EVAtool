@@ -17,6 +17,7 @@ from evatool.utils.sam import SAM
 from evatool.utils.bam import Bam
 from evatool.utils.tag import Tag
 from evatool.utils.stat import Stat
+from evatool.utils.plot import Plot
 from evatool.utils.report import Report
 
 import argparse
@@ -39,9 +40,10 @@ def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None
 
 
 def main(configure):
-    print(configure)
     result = run(configure.input, configure.output, configure.config, configure.ncrna)
     if result == 1:
+        plot_result = Plot(configure.input, configure.output)
+        plot_result.generate_plot()
         report_result = Report(configure.input, configure.output)
         report_result.prepare_html()
         print("Success!")
