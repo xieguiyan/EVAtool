@@ -21,19 +21,23 @@ from evatool.utils.plot import Plot
 from evatool.utils.report import Report
 
 import argparse
+import datetime
 
 
 def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None:
     config = Config(config)
     logger = Logger(f"{outputdir}.log.txt")
+    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start pre-processing")
     fastq_result = Fastq(inputfile, outputdir, config=config, log=logger, ncrna_lst=ncrna_lst)
     fastq_result.process_fastq()
     tag_result = Tag(fastq=fastq_result)
     tag_result.pocess_stat()
+    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start mapping")
     sam_result = SAM(fastq=fastq_result)
     sam_result.get_sam()
     bam_result = Bam(fastq=fastq_result, tag=tag_result)
     bam_result.process_bam()
+    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start quantification")
     stat_result = Stat(fastq=fastq_result, tag=tag_result)
     stat_result.stat_match()
     return 1
@@ -42,13 +46,14 @@ def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None
 def main(configure):
     result = run(configure.input, configure.output, configure.config, configure.ncrna)
     if result == 1:
+        print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start generate report")
         plot_result = Plot(configure.input, configure.output)
         plot_result.generate_plot()
         report_result = Report(configure.input, configure.output)
         report_result.prepare_html()
-        print("Success!")
+        print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}:Success!")
     else:
-        print("Failed!")
+        print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}:Failed!")
 
 
 if __name__ == "__main__":
