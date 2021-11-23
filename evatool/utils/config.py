@@ -13,15 +13,23 @@ current_path = Path(__file__).parent
 
 
 class Config(object):
-    def __init__(self, configfile: Path = current_path / "../resource/configure.json"):
+    def __init__(self, configfile: Path):
         self.configfile = Path(configfile)
+        self.tool_config = Path(current_path / "../resource/tool_config.json")
         self.config = self.read_config()
         self.mature_miRNA, self.hairpin_info = self.deal_mir_info()
 
     def read_config(self):
+        with open(self.tool_config, "r") as t:
+            tool_conf = json.load(t)
         try:
             with open(self.configfile, "r") as f:
-                return json.load(f)
+                ref_config = json.load(f)
+                for key in ref_config:
+                    if ref_config[key].startswith("/refs"):
+                        ref_config[key] = f"{self.configfile.parent}/{ref_config[key].replace('/refs/','')}"
+                    tool_conf[key] = ref_config[key]
+            return tool_conf
         except IOError:
             print(f"{self.configfile} not exists.")
 
