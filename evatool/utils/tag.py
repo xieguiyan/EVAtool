@@ -53,7 +53,8 @@ class Tag(object):
                 reads_n += seq_count
                 tag_number = n + 1
                 tag_number = "t{0:0>8d}".format(tag_number)
-                if seq_count > self.fastq.config["tag_cut"]:
+                cut_off = int(self.fastq.config.config["tag_cut"])
+                if seq_count > cut_off:
                     out_reads_n += seq_count
                     tf.write(f">{tag_number}\t{seq_count:d}\n{line}\n")
                     # tag_count[tag_number] = int(seq_count)
