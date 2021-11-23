@@ -1,5 +1,4 @@
 import sys
-import os
 
 
 sys.path.append("../EVAtool")
@@ -8,7 +7,7 @@ sys.path.append("../EVAtool")
 def test_config():
     from evatool.utils.config import Config
 
-    config = Config()
+    config = Config(configfile="/home/xiegy/github/EVAtool/refs/reference_config.json")
     print(config.config)
 
 
