@@ -11,10 +11,11 @@
 #-c: configure file with path ( not required)
 #-n: ncRNA type list (not required)
 
+# /home/xiegy/github/EVAtool/test/example-script/example_evatool.sh
 
 /home/xiegy/github/EVAtool/venv/bin/python \
   /home/xiegy/github/EVAtool/evatool/main.py \
   -i /home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra \
-  -o /home/xiegy/github/EVAtool/test/tmp_result \
-  -c /home/xiegy/github/EVAtool/evatool/resource/configure.json \
-  -n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
+  -o /home/xiegy/github/EVAtool/test/tmp_result
+  # -c /home/xiegy/github/EVAtool/evatool/resource/configure.json \
+  # -n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
