@@ -63,7 +63,7 @@ class SAM(object):
             self.fastq.config.config[ncrna + "_index"],
             "-p",
             self.fastq.config.config["cpu_number"],
-            self.fastq.config.config["bowtie_para_4_{0}".format(ncrna)],
+            self.fastq.config.config[f"bowtie_para_4_{ncrna}"],
             "-f",
             self.tag_fa,
             "-S",
