@@ -13,17 +13,18 @@ template_path = Path.cwd() / "evatool" / "resource"
 
 
 class Report:
-    def __init__(self, inputfile: Path, outputdir: Path, config: Path):
+    def __init__(self, inputfile: Path, outputdir: Path, config: Path, ncrna_list: list):
         self.inputfile = Path(inputfile)
         self.outputdir = outputdir
         self.config = config
+        self.ncrna_list = ncrna_list
         self.samprefix = f"{self.outputdir}/{self.inputfile.stem}"
 
-    def generate_html(self, body, body2, stoptime, img_path, config):
+    def generate_html(self, body, body2, stoptime, img_path, config, sam_info):
         env = Environment(loader=FileSystemLoader(template_path))
         template = env.get_template("template_report.html")
         with open(f"{self.outputdir}/Report_result.html", "w+") as fout:
-            html_content = template.render(stop_time=stoptime, body=body, body2=body2, img_path=img_path, config=config)
+            html_content = template.render(stop_time=stoptime, body=body, body2=body2, img_path=img_path, config=config, sam_info=sam_info)
             fout.write(html_content)
 
     def load_readlen_data(self):
@@ -63,6 +64,7 @@ class Report:
         body = []
         body2 = []
         img_path = {}
+        sam_info = {}
         len_dis = self.load_readlen_data()
         all_map_info = self.load_ncrnatype_data()
         img_path["read_len"] = "distribution_of_read_len.png"
@@ -70,5 +72,8 @@ class Report:
         time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         body.append(len_dis)
         body2 = all_map_info
+        sam_info["sam_name"] = self.inputfile.stem
+        sam_info["sam_path"] = self.outputdir
+        sam_info["ncrna_list"] = self.ncrna_list
         config = self.config
-        self.generate_html(body, body2, time, img_path, config)
+        self.generate_html(body, body2, time, img_path, config, sam_info)
