@@ -24,17 +24,18 @@ class Plot:
 
     def read_length_distribution(self) -> None:
         # Reads length distribution
-        plt.figure(dpi=300, figsize=(8, 4))
+        plt.figure(dpi=300, figsize=(9, 5))
         read = pd.read_table(f"{self.samprefix}.freq.stat", sep="\t", header=None, skipfooter=1)
         read.columns = ["Read length", "count", "Read count percentage"]
         read_len = sns.lineplot(x="Read length", y="Read count percentage", data=read)
         # save image
+        print("test for plot")
         read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.png")
         read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.pdf")
 
     def read_type_distribution(self) -> None:
         # Read type distribution
-        plt.figure(dpi=300, figsize=(8, 4))
+        plt.figure(dpi=300, figsize=(9, 5))
         ncrna_type = pd.read_table(f"{self.samprefix}.stat", header=None, sep="\t", skiprows=4, dtype=str)
         ncrna_type.columns = ["Category", "MappingTag", "Ratio"]
         ncrna_type["Ratio"] = ncrna_type["Ratio"].apply(lambda x: np.nan if x in ["-"] else x[:-1]).astype(float) / 100
