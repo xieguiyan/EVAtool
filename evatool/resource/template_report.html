@@ -4,17 +4,57 @@
 <head>
     <title>Report</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <style type="text/css">
+        body {
+            background-color: #F9F5F5;
+        }
+        .bodystyle{
+            width: 60%;
+            margin: auto;
+            background-color: white
+        }
+        .headstyle{
+            text-align: center;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+        h1 {
+            color: #005167;
+            margin-top: 20px;
+        }
+        h2{
+            color: #3C9EB7;
+        }
+        h5{
+            color: #F99136;
+            margin-top: -15px;
+        }
+        img{
+            width: 600px;
+        }
+    </style>
 </head>
 
-    <body style="background-color: #F9F5F5;">
-        <div style="width: 60%;margin: auto; background-color: white;">
-            <div style="text-align: center;margin-bottom: 15px;margin-top: 20px;">
-                <h1 style="color: #3c9eb7;margin-top: 20px;">EVAtool result report</h1>
-                <h5 style="color: #E59D23;margin-top: -15px;">Report time: {{stop_time}}</h5>
+    <body>
+        <div class="bodystyle">
+            <div class="headstyle">
+                <h1>EVAtool result report</h1>
+                <h5>Report time: {{stop_time}}</h5>
             </div>
             <div style="margin-left: 15px;">
+                <div class="row">
+                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Basic analysis information:</h2>
+                    <ul>
+                        <li>Sample name:</li>
+                        <li>ncRNA types:</li>
+                        <li>Directory of result:</li>
+                        <li>Main config for your analysis:</li>
+                    </ul>
+                </div>
                 <div>
-                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Reads length distribution</h2>
+                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Analysis result:</h2>
+                    <h4><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Reads length distribution</h4>
+                    <p>Reads length distribution xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
                     <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
                     <tr>
                         <th> <15 </th>
@@ -41,12 +81,13 @@
                     <p>*: Sum of the read count which is greater than one.</p>
                 </div>
                 <div>
-                    <h2><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Figure</h2>
+                    <h4><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Figure</h4>
                     <p>distribution_of_read_len</p>
-                    <img src="./{{ img_path }}" width="400">
+                    <img src="./{{ img_path.read_len }}">
                 </div>
                 <div>
-                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Reads length distribution</h2>
+                    <h4><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Reads length distribution</h4>
+                    <p>Reads length distribution xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
                     <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
                         <tr>
                             <th>ncRNAType</th>
@@ -65,9 +106,17 @@
                 </div>
                 <div style="clear: both;">
                     <br>
-                    <h2><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Figure</h2>
+                    <h4><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Figure</h4>
                     <p>distribution_of_small_ncRNA_type</p>
-                    <img src="./{{ img_path2 }}" width="400">
+                    <img src="./{{ img_path.ncrna_type }}">
+                </div>
+                <div class="row">
+                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Other results:</h2>
+                    <ul>
+                        <li>Expression file: {sample name}.{RNA type}.exp</li>
+                        <li>Mapping details: {sample name}.{RNA type}.bowtie.stat</li>
+                        <li>Sam file: {sample name}.{RNA type}.sam</li>
+                    </ul>
                 </div>
             </div>
             <br><br>
