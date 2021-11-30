@@ -51,7 +51,7 @@ def main(configure):
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start generate report")
         plot_result = Plot(configure.input, configure.output)
         plot_result.generate_plot()
-        report_result = Report(configure.input, configure.output, configure.config)
+        report_result = Report(configure.input, configure.output, configure.config, configure.ncrna)
         report_result.prepare_html()
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}:Success!")
     else:
