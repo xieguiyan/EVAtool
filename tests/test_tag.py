@@ -10,7 +10,14 @@ def test_tag():
     from evatool.utils.config import Config
     from evatool.utils.logger import Logger
 
-    stat_result = Tag(fastq=Fastq(inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra", outputdir="/home/xiegy/github/EVAtool/test/tmp_result", config=Config(), log=Logger()))
+    stat_result = Tag(
+        fastq=Fastq(
+            inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR10078125.sra",
+            outputdir="/home/xiegy/github/EVAtool/test/tmp_result/SRR10078125",
+            config=Config(configfile="/home/xiegy/github/EVAtool/refs/reference_config.json"),
+            log=Logger(),
+        )
+    )
     stat_result.pocess_stat()
 
 

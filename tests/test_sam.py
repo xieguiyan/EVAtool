@@ -11,7 +11,14 @@ def test_sam():
     from evatool.utils.logger import Logger
     from evatool.utils.fastq import Fastq
 
-    sam = SAM(fastq=Fastq(inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra", outputdir="/home/xiegy/github/EVAtool/test/tmp_result", config=Config(), log=Logger()))
+    sam = SAM(
+        fastq=Fastq(
+            inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR10078125.sra",
+            outputdir="/home/xiegy/github/EVAtool/test/tmp_result/SRR10078125",
+            config=Config(configfile="/home/xiegy/github/EVAtool/refs/reference_config.json"),
+            log=Logger(),
+        )
+    )
     sam.get_sam()
 
 
