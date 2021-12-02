@@ -25,11 +25,10 @@ class Plot:
     def read_length_distribution(self) -> None:
         # Reads length distribution
         plt.figure(dpi=300, figsize=(9, 5))
-        read = pd.read_table(f"{self.samprefix}.freq.stat", sep="\t", header=None, skipfooter=1)
+        read = pd.read_table(f"{self.samprefix}.freq.stat", sep="\t", header=None, skipfooter=1, engine="python")
         read.columns = ["Read length", "count", "Read count percentage"]
         read_len = sns.lineplot(x="Read length", y="Read count percentage", data=read)
         # save image
-        print("test for plot")
         read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.png")
         read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.pdf")
 
