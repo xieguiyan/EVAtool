@@ -15,7 +15,7 @@
 
 /home/xiegy/github/EVAtool/venv/bin/python \
   /home/xiegy/github/EVAtool/evatool/main.py \
-  -i /home/xiegy/github/EVAtool/test/example-data/SRR8185773.sra \
-  -o /home/xiegy/github/EVAtool/test/tmp_result
+  -i /home/xiegy/github/EVAtool/test/example-data/SRR10078125.sra \
+  -o /home/xiegy/github/EVAtool/test/tmp_result/SRR10078125
   # -c /home/xiegy/github/EVAtool/evatool/resource/configure.json \
   # -n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
