@@ -94,8 +94,7 @@ class Tag(object):
             fq_len_frequency_dict, reads_n, out_reads_n = self.store_tag(sorted_tag_number, tag_dict)
             self.store_freq(fq_len_frequency_dict, reads_n, out_reads_n)
             if Path(self.tagfile).exists():
-                # self.tag_count_dict = self.get_tag_count()
-                # print(self.tag_count_dict["t00000001"])
+                self.tag_count_dict = self.get_tag_count()
                 self.fastq.log.log(message="Success in stat seq in fq!")
             else:
                 self.fastq.log.log(message="Error in stat seq in fq!")
