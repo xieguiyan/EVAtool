@@ -28,7 +28,7 @@ current_path = Path(__file__).parent
 
 def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None:
     config = Config(config)
-    logger = Logger(f"{outputdir}.log.txt")
+    logger = Logger(f"{outputdir}/evatool.log")
     print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start pre-processing")
     fastq_result = Fastq(inputfile, outputdir, config=config, log=logger, ncrna_lst=ncrna_lst)
     fastq_result.process_fastq()
@@ -53,9 +53,9 @@ def main(configure):
         plot_result.generate_plot()
         report_result = Report(configure.input, configure.output, configure.config, configure.ncrna)
         report_result.prepare_html()
-        print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}:Success!")
+        print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Success!")
     else:
-        print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}:Failed!")
+        print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Failed!")
 
 
 if __name__ == "__main__":
