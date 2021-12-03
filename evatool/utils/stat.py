@@ -272,7 +272,7 @@ class Stat(object):
             self.stat_each_ncRNA_exp(i, mapped_nc_tag_dict, mapped_ncRNA_counts, ref_exp, ref_tag_detail, total_mapped_tags_sum, exp_cal_category)
             nc_counts_sum = sum([ref_exp[i][j] for j in ref_exp[i] if j != "other"])
             ncRNA_exp_stat.write("{0}\t{1:d}\t{2:.2f}%\n".format(i, nc_counts_sum, nc_counts_sum / total_mapped_tags_sum * 100))
-            self.fastq.log.log("calcultion for expression of {i} completed")
+            self.fastq.log.log(f"calcultion for expression of {i} completed")
         ncRNA_exp_stat.close()
 
     def tag_genome_classfication(self, new_anno_tag_detail):
