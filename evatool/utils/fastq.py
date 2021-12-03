@@ -25,23 +25,24 @@ class Fastq(object):
         return True if self.inputfile.suffix == ".sra" else False
 
     def is_fastq(self):
-        return True if (self.inputfile.suffix == ".fastq" or self.inputfile.suffix == ".fastq.gz") else False
+        return True if (self.inputfile.suffix == ".fastq" or "".join(self.inputfile.suffixes) == ".fastq.gz") else False
 
     def dump_fastq(self):
         cmd = [self.config.config["fastqdump"], "--dumpbase", "--gzip", "--split-files", "-O", self.outputdir, self.inputfile]
         return subprocess.run(cmd)
 
-    def trim(self) -> None:
+    def trim(self, fq_file) -> None:
         trimmed_fq = f"{self.outputdir}/{self.trimname}"
         filter_params = f"ILLUMINACLIP:{self.config.config['adp_path']}:{self.config.config['trimmomatic_sRNA_para']}"
-        cmd = f"java -jar -Xms8000m -Xmx8000m {self.config.config['trimmomatic']} SE -threads {self.config.config['cpu_number']} {self.outputdir}/{self.inputfile.stem}_1.fastq.gz {trimmed_fq} {filter_params}"
+        cmd = f"java -jar -Xms8000m -Xmx8000m {self.config.config['trimmomatic']} SE -threads {self.config.config['cpu_number']} {fq_file} {trimmed_fq} {filter_params}"
         return subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
     def process_fastq(self):
         if self.is_sra():
             rc = self.dump_fastq()
             if rc.returncode == 0:
-                runtrim = self.trim()
+                fq_file = f"{self.outputdir}/{self.inputfile.stem}_1.fastq.gz"
+                runtrim = self.trim(fq_file)
                 if runtrim.returncode == 0:
                     self.log.log(message=f"Success in trimm {self.inputfile.stem} fastq file")
                 else:
@@ -50,7 +51,8 @@ class Fastq(object):
             else:
                 self.log.log(message=f"Error in dump SRA file {self.inputfile.stem} to fastq")
         elif self.is_fastq():
-            runtrim = self.trim()
+            fq_file = self.inputfile
+            runtrim = self.trim(fq_file)
             if runtrim.returncode == 0:
                 self.log.log(message=f"Success in trimm {self.inputfile.stem} fastq file")
             else:
