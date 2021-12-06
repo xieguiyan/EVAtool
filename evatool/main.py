@@ -23,6 +23,7 @@ from evatool.utils.report import Report
 import argparse
 import datetime
 import logging
+import logging.config
 
 current_path = Path(__file__).parent
 
@@ -30,26 +31,29 @@ current_path = Path(__file__).parent
 def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None:
     config = Config(config)
     logger = Logger(f"{outputdir}/evatool.log")
-    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start pre-processing")
+    # logger.info("Start pre-processing")
+    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Start pre-processing")
     fastq_result = Fastq(inputfile, outputdir, config=config, log=logger, ncrna_lst=ncrna_lst)
     fastq_result.process_fastq()
     tag_result = Tag(fastq=fastq_result)
     tag_result.pocess_stat()
-    logging.info("Doing something stat")
-    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start mapping")
+    # logger.info("Start mapping...")
+    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Start mapping")
     sam_result = SAM(fastq=fastq_result)
     sam_result.get_sam()
     bam_result = Bam(fastq=fastq_result, tag=tag_result)
     bam_result.process_bam()
-    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start quantification")
+    # logger.info("Start quantification")
+    print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Start quantification")
     stat_result = Stat(fastq=fastq_result, tag=tag_result)
     stat_result.stat_match()
     return 1
 
 
 def main(configure):
-    logging.basicConfig(format="%(asctime)s - %(levelname)s - %(message)s", filename=f"{configure.output}/my_evatool.log", level=logging.INFO)
-    logging.info("Started")
+    logging.config.fileConfig(current_path / "resource/logging.conf")
+    logger = logging.getLogger("EVAtool")
+    logger.info(f"Start processing {configure.input}")
     result = run(configure.input, configure.output, configure.config, configure.ncrna)
     if result == 1:
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start generate report")
@@ -57,10 +61,11 @@ def main(configure):
         plot_result.generate_plot()
         report_result = Report(configure.input, configure.output, configure.config, configure.ncrna)
         report_result.prepare_html()
+        logger.info(f"Finished! The result are stored in {configure.output}!")
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Success!")
     else:
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Failed!")
-        logging.info("Finished")
+        logger.error(f"Failed in processing your data, please check the problems in the log file: {configure.output}/evatool.log")
 
 
 if __name__ == "__main__":
