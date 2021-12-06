@@ -22,6 +22,7 @@ from evatool.utils.report import Report
 
 import argparse
 import datetime
+import logging
 
 current_path = Path(__file__).parent
 
@@ -34,6 +35,7 @@ def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None
     fastq_result.process_fastq()
     tag_result = Tag(fastq=fastq_result)
     tag_result.pocess_stat()
+    logging.info("Doing something stat")
     print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start mapping")
     sam_result = SAM(fastq=fastq_result)
     sam_result.get_sam()
@@ -46,6 +48,8 @@ def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None
 
 
 def main(configure):
+    logging.basicConfig(format="%(asctime)s - %(levelname)s - %(message)s", filename=f"{configure.output}/my_evatool.log", level=logging.INFO)
+    logging.info("Started")
     result = run(configure.input, configure.output, configure.config, configure.ncrna)
     if result == 1:
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start generate report")
@@ -56,6 +60,7 @@ def main(configure):
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Success!")
     else:
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: Failed!")
+        logging.info("Finished")
 
 
 if __name__ == "__main__":
