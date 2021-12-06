@@ -16,19 +16,6 @@ class Logger(object):
         self.logfile = logfile
 
     def log(self, message) -> None:
-        logger = logging.getLogger("my_logger")
+        logger = logging.getLogger("EVAtool-subprocess")
         logger.setLevel(logging.INFO)
-        fh = logging.FileHandler(self.logfile)
-        fh.setLevel(logging.INFO)
-
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        fh.setFormatter(formatter)
-
-        logger.addHandler(fh)
-
         logger.info(message)
-
-
-# Logger("Success in log functions!", "/home/xiegy/github/EVAtool/src/evatool/utils/log.txt").mylogger
-# print(loginfo)
-# print(loginfo.mylogger())
