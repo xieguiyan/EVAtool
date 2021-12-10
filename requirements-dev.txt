@@ -8,3 +8,4 @@ twine
 ipykernel
 pandas
 numpy
+seaborn
