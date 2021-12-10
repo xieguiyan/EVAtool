@@ -29,5 +29,6 @@ or
     #-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
   
 
-![work-flow](https://user-images.githubusercontent.com/19505178/130918235-e4fde4bc-5e6b-4450-a7e1-39f2427256eb.png)
+
+![workflow-1129](https://user-images.githubusercontent.com/19505178/145513114-4f0f9198-7b04-48cc-befc-377e85159513.png)
 
