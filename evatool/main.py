@@ -53,6 +53,8 @@ def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None
 def main(configure):
     logging.config.fileConfig(current_path / "resource/logging.conf")
     logger = logging.getLogger("EVAtool")
+    log_name = logger.handlers[0].baseFilename
+    logger.handlers[0].baseFilename = log_name.replace("evatool.log", f"{configure.output}/test.log")
     logger.info(f"Start processing {configure.input}")
     result = run(configure.input, configure.output, configure.config, configure.ncrna)
     if result == 1:
