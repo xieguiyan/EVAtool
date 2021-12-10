@@ -17,16 +17,16 @@ Usage:
 #-c: configure file with path ( not required)
 #-n: ncRNA type list (not required)
 
-#bash /home/xiegy/github/EVAtool/test/example-script/example_evatool.sh
+1. bash /home/xiegy/github/EVAtool/test/example-script/example_evatool.sh
 
-# or
+or
 
-/home/xiegy/github/EVAtool/venv/bin/python \
-  /home/xiegy/github/EVAtool/evatool/main.py \
-  -i /home/xiegy/github/EVAtool/test/example-data/example.fastq.gz \
-  -o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz
-  #-c /home/xiegy/github/EVAtool/evatool/resource/configure.json \
-  #-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
+2. /home/xiegy/github/EVAtool/venv/bin/python \
+    /home/xiegy/github/EVAtool/evatool/main.py \
+    -i /home/xiegy/github/EVAtool/test/example-data/example.fastq.gz \
+    -o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz
+    #-c /home/xiegy/github/EVAtool/evatool/resource/configure.json \
+    #-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
   
 
 ![work-flow](https://user-images.githubusercontent.com/19505178/130918235-e4fde4bc-5e6b-4450-a7e1-39f2427256eb.png)
