@@ -12,10 +12,10 @@ Extracellular Vesicles Abundance of ncRNAs expression quantification tool
 
 Usage:
 
-#-i: sra file with path (required)
-#-o: output directory (required)
-#-c: configure file with path ( not required)
-#-n: ncRNA type list (not required)
+#-i: sra file with path (required) <br>
+#-o: output directory (required) <br>
+#-c: configure file with path ( not required) <br>
+#-n: ncRNA type list (not required) <br>
 
 1. bash /home/xiegy/github/EVAtool/test/example-script/example_evatool.sh
 
@@ -24,9 +24,9 @@ or
 2. /home/xiegy/github/EVAtool/venv/bin/python \
     /home/xiegy/github/EVAtool/evatool/main.py \
     -i /home/xiegy/github/EVAtool/test/example-data/example.fastq.gz \
-    -o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz
-    #-c /home/xiegy/github/EVAtool/evatool/resource/configure.json \
-    #-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
+    -o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz <br>
+    #-c /home/xiegy/github/EVAtool/evatool/resource/configure.json \ <br>
+    #-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA" <br>
   
 
 
