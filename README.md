@@ -21,10 +21,10 @@ Usage:
 
 or
 
-2. /home/xiegy/github/EVAtool/venv/bin/python \
-    /home/xiegy/github/EVAtool/evatool/main.py \
-    -i /home/xiegy/github/EVAtool/test/example-data/example.fastq.gz \
-    -o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz <br>
+2. /home/xiegy/github/EVAtool/venv/bin/python \ <br>
+    /home/xiegy/github/EVAtool/evatool/main.py \ <br>
+    -i /home/xiegy/github/EVAtool/test/example-data/example.fastq.gz \ <br>
+    -o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz \ <br>
     #-c /home/xiegy/github/EVAtool/evatool/resource/configure.json \ <br>
     #-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA" <br>
   
