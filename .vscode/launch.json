@@ -9,7 +9,11 @@
       "type": "python",
       "request": "launch",
       "program": "${file}",
-      "console": "integratedTerminal"
+      "args": [],
+      "purpose": ["debug-test"],
+      "cwd": "${fileDirname}",
+      "console": "integratedTerminal",
+      "justMyCode": false
     }
   ]
 }
