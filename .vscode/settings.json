@@ -37,7 +37,8 @@
     "**/rda": true,
     "**/.Rproj.user": true,
     "**/*rds.gz": true,
-    ".pytest_cache": true
+    ".pytest_cache": true,
+    "*.egg-info": true
   },
   "gitlens.mode.active": "zen",
   "editor.wordWrap": "on",
