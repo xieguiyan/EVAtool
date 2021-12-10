@@ -1,4 +1,4 @@
-name: jrocker
+name: evatool
 
 on:
   push:
