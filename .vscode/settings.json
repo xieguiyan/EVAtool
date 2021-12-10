@@ -6,7 +6,7 @@
   "python.linting.lintOnSave": true,
   "python.testing.pytestEnabled": true,
   "python.testing.pytestPath": "venv/bin/pytest",
-  "python.testing.pytestArgs": [],
+  "python.testing.pytestArgs": ["-c", "pytest.ini"],
   "python.testing.autoTestDiscoverOnSaveEnabled": true,
   "python.formatting.provider": "black",
   "python.formatting.blackPath": "venv/bin/black",
@@ -66,5 +66,6 @@
   "jupyter.jupyterServerType": "local",
   "code-runner.executorMap": {
     "python": "venv/bin/python"
-  }
+  },
+  "python.testing.unittestEnabled": false
 }
