@@ -3,7 +3,7 @@ name: evatool
 on:
   push:
     branches:
-      - main
+      - build-docker
 
 jobs:
   docker:
