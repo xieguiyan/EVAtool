@@ -15,10 +15,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="evatool",
+    name="evatoolt",
     version=VERSION,
-    keyworkds="evatool",
+#    keyworkds="evatool",
     description=DESCRIPTION,
+    long_description_content_type="text/x-rst",
     long_description=long_description,
     author="Dr. Xie and Dr. Liu",
     author_email="xieguiyan@hust.eud.cn",
