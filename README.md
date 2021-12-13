@@ -1,34 +1,98 @@
 # EVAtool
-Extracellular Vesicles Abundance of ncRNAs expression quantification tool
 
-[Home page](http://bioinfo.life.hust.edu.cn/EVAtool/#)
+---
+###### Background
+non-coding RNAs (ncRNA) in extracellular vesicles (EVs) role as important agents of cell-to-cell communication. The abundance of transcripts varies in different states, especially in the tumors. Therefore, quantification of ncRNAs in EVs plays an important role in the process of exploring cancer diagnostic biomarkers.
+###### Requires
+python >= 3.5 <br>
+###### Softwares
+samtools = 1.12 <br>
+bowtie = 2.4.2 <br>
+fastq-dump = 2.10.9 <br>
+trimmomatic-0.39.jar <br>
+bedtools = 2.30.0 <br>
 
-#bin files for softwares
-1. samtools = 1.12
-2. bowtie = 2.4.2
-3. fastq-dump = 2.11.0
-5. trimmomatic-0.39.jar
-6. bedtools = 2.30.0
+###### Usage
+- Reference and config file download
+    - wget "xxxxxx"
 
-Usage:
+- install evatool
+   
+```
+pip install -i https://test.pypi.org/simple/ evatoolt
+```
 
-#-i: sra file with path (required) <br>
-#-o: output directory (required) <br>
-#-c: configure file with path ( not required) <br>
-#-n: ncRNA type list (not required) <br>
+- Example
 
-1. bash /home/xiegy/github/EVAtool/test/example-script/example_evatool.sh
+```
+>>>from evatool.utils.fastq import Fastq
+>>>from evatool.utils.config import Config
+>>>from evatool.utils.logger import Logger
+>>> def test_config():
+...     from evatool.utils.config import Config
+...     config = Config(configfile="./refs/reference_config.json")
+...     print(config.config)
+
+>>> test_config()
+```
+- Command line parameters
+
+```
+#-i: sra file with path (required)
+#-o: output directory (required)
+#-c: configure file with path ( not required)
+#-n: ncRNA type list (not required)
+```
+
+- Two ways of running the scripts
+
+```
+bash /home/xiegy/github/EVAtool/test/example-script/example_evatool.sh
 
 or
 
-2. /home/xiegy/github/EVAtool/venv/bin/python \ <br>
-    /home/xiegy/github/EVAtool/evatool/main.py \ <br>
-    -i /home/xiegy/github/EVAtool/test/example-data/example.fastq.gz \ <br>
-    -o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz \ <br>
-    #-c /home/xiegy/github/EVAtool/evatool/resource/configure.json \ <br>
-    #-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA" <br>
-  
+/home/xiegy/github/EVAtool/venv/bin/python \
+/home/xiegy/github/EVAtool/evatool/main.py \
+-i /home/xiegy/github/EVAtool/test/example-data/example.fastq.gz \
+-o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz \
+#-c /home/xiegy/github/EVAtool/evatool/resource/configure.json \
+#-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
+```
+
+###### Configure
+1. xxx
+2. xxx
+3. xxx
 
 
-![workflow-1129](https://user-images.githubusercontent.com/19505178/145513114-4f0f9198-7b04-48cc-befc-377e85159513.png)
+###### Advanced usage
+1. xxx
+2. xxx
+3. xxx
 
+###### Directory tree
+├── __init__.py <br>
+├── main.py <br>
+├── resource <br>
+│   ├── __init__.py <br>
+│   ├── logging.conf <br>
+│   ├── template_report.html <br>
+│   └── tool_config.json <br>
+└── utils <br>
+    ├── bam.py <br>
+    ├── config.py <br>
+    ├── fastq.py <br>
+    ├── __init__.py <br>
+    ├── logger.py <br>
+    ├── plot.py <br>
+    ├── README.md <br>
+    ├── report.py <br>
+    ├── sam.py <br>
+    ├── stat.py <br>
+    └── tag.py <br>
+
+
+###### 版本内容更新
+ evatoolt 0.1.1 add README.md
+ 
+ 
