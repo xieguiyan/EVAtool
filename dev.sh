@@ -10,6 +10,7 @@
 
 
 # python3 -m build
+source venv/bin/activate
 
 rm -rf dist build
 python setup.py sdist bdist_wheel
