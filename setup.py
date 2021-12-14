@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 MAJOR = 0
 MINOR = 1
-MICRO = 1
+MICRO = 3
 ISRELEASED = True
 VERSION = f"{MAJOR}.{MINOR}.{MICRO}"
 
@@ -15,11 +15,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="evatoolt",
+    name="evatool",
     version=VERSION,
 #    keyworkds="evatool",
     description=DESCRIPTION,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     long_description=long_description,
     author="Dr. Xie and Dr. Liu",
     author_email="xieguiyan@hust.eud.cn",
