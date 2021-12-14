@@ -9,8 +9,8 @@ def test_report():
     from evatool.utils.report import Report
 
     report_html = Report(
-        inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR10078125.sra",
-        outputdir="/home/xiegy/github/EVAtool/test/tmp_result/SRR10078125",
+        inputfile="/home/xiegy/github/EVAtool/test/example-data/example.fastq.gz",
+        outputdir="/home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz",
         config="/home/xiegy/github/EVAtool/refs/reference_config.json",
         ncrna_list=["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "YRNA"],
     )

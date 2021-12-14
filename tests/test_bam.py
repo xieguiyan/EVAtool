@@ -14,15 +14,15 @@ def test_bam():
 
     bam = Bam(
         fastq=Fastq(
-            inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR10078125.sra",
-            outputdir="/home/xiegy/github/EVAtool/test/tmp_result/SRR10078125",
+            inputfile="/home/xiegy/github/EVAtool/test/example-data/example.fastq.gz",
+            outputdir="/home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz",
             config=Config(configfile="/home/xiegy/github/EVAtool/refs/reference_config.json"),
             log=Logger(),
         ),
         tag=Tag(
             fastq=Fastq(
-                inputfile="/home/xiegy/github/EVAtool/test/example-data/SRR10078125.sra",
-                outputdir="/home/xiegy/github/EVAtool/test/tmp_result/SRR10078125",
+                inputfile="/home/xiegy/github/EVAtool/test/example-data/example.fastq.gz",
+                outputdir="/home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz",
                 config=Config(configfile="/home/xiegy/github/EVAtool/refs/reference_config.json"),
                 log=Logger(),
                 ncrna_lst=["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "YRNA"],
