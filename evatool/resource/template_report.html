@@ -143,6 +143,46 @@ piR-34536       114     74.06</pre>
                     <h4><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Visualization</h4>
                     <p>Barplot presented the proportion of reads of different ncRNAs.</p>
                     <img src="./{{ img_path.ncrna_type }}">
+                    <p>Piechart presented the proportion of reads of different ncRNAs and unmapped reads.</p>
+                    <img src="./{{ img_path.ncrna_type }}">
+                </div>
+                <div>
+                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>Top 10 highly expressed RNAs from different ncRNAs</h4>
+                    <p>The top 10 highly expressed RNAs are displayed in the following table:</p>
+                    <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
+                        <tr>
+                            <th>ncRNAType</th>
+                            <th>RNA name</th>
+                            <th>RPM</th>
+                            <th>Count</th>
+                        </tr>
+                        {% for item in body2 %}
+                        <tr align='center'>
+                            <td>{{ item.Category }}</td>
+                            <td>{{ item.MappedTag }}</td>
+                            <td>{{ item.Ratio }}</td>
+                            <td>{{ item.Ratio }}</td>
+                        </tr>
+                        {% endfor%}
+                        </table>
+                    <br><br>
+                </div>
+                <div>
+                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>The number of expressions of RNA in different types of ncRNA</h4>
+                    <p>The number of expressions of RNA in different types of ncRNA are displayed in the following table:</p>
+                    <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
+                        <tr>
+                            <th>ncRNAType</th>
+                            <th>Number</th>
+                        </tr>
+                        {% for item in body2 %}
+                        <tr align='center'>
+                            <td>{{ item.Category }}</td>
+                            <td>{{ item.MappedTag }}</td>
+                        </tr>
+                        {% endfor%}
+                        </table>
+                    <br><br>
                 </div>
                 <div class="row">
                     <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Other results:</h2>
