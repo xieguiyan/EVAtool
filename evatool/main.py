@@ -59,7 +59,7 @@ def main(configure):
     result = run(configure.input, configure.output, configure.config, configure.ncrna)
     if result == 1:
         print(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: start generate report")
-        plot_result = Plot(configure.input, configure.output)
+        plot_result = Plot(configure.input, configure.output, configure.ncrna)
         plot_result.generate_plot()
         report_result = Report(configure.input, configure.output, configure.config, configure.ncrna)
         report_result.prepare_html()
