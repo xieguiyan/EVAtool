@@ -54,16 +54,21 @@
             <div style="margin-left: 15px;">
                 <div class="row">
                     <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Basic analysis information:</h2>
-                    <ul>
-                        <li><span>Sample name: </span></li>
-                        <p>{{ sam_info.sam_name }}</p>
-                        <li><span>ncRNA types: </span></li>
-                        <p>{{ sam_info.ncrna_list}}</p>
-                        <li><span>Directory of result: </span></li>
-                        <p>{{ sam_info.sam_path }}</p>
-                        <li><span>Config file for your analysis: </span></li>
-                        <p>{{ config }}</p>
-                    </ul>
+                    <pre>
+<ul>
+<li><span>Sample name: </span></li>
+<span>{{ sam_info.sam_name }}</span>
+
+<li><span>ncRNA types: </span></li>
+<span>{{ sam_info.ncrna_list}}</span>
+
+<li><span>Directory of result: </span></li>
+<span>{{ sam_info.sam_path }}</span>
+
+<li><span>Config file for your analysis: </span></li>
+<span>{{ config }}</span>
+</ul>
+                    </pre>
                 </div>
                 <div>
                     <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Analysis result:</h2>
@@ -147,8 +152,8 @@ piR-34536       114     74.06</pre>
                     <img src="./{{ img_path.ncrna_type_pie }}">
                 </div>
                 <div style="clear: both;">
-                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>Top 10 highly expressed RNAs from different ncRNAs</h4>
-                    <p>The top 10 highly expressed RNAs are displayed in the following table:</p>
+                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>Top 5 highly expressed RNAs from different ncRNAs</h4>
+                    <p>The top 5 highly expressed RNAs are displayed in the following table:</p>
                     <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
                         <tr>
                             <th>ncRNAType</th>
@@ -156,15 +161,24 @@ piR-34536       114     74.06</pre>
                             <th>RPM</th>
                             <th>Count</th>
                         </tr>
-                        {% for item in body2 %}
+                        {% for item in all_top10 %}
                         <tr align='center'>
-                            <td>{{ item.Category }}</td>
-                            <td>{{ item.MappedTag }}</td>
-                            <td>{{ item.Ratio }}</td>
-                            <td>{{ item.Ratio }}</td>
+                            <td>{{ item.type }}</td>
+                            <td>{{ item.rna }}</td>
+                            <td>{{ item.rpm }}</td>
+                            <td>{{ item.count }}</td>
                         </tr>
                         {% endfor%}
                         </table>
+                    <br><br>
+                </div>
+                <div style="clear: both;">
+                    <br>
+                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>The expression distribution of each ncRNA</h4>
+                    <p>The expression distribution of each ncRNA:</p>
+                    {% for item in sam_info.ncrna_list %}
+                    <img src="./exp_distribution_of_{{ item }}.png">
+                    {% endfor%}
                     <br><br>
                 </div>
                 <div style="clear: both;">
