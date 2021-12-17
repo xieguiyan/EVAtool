@@ -144,9 +144,9 @@ piR-34536       114     74.06</pre>
                     <p>Barplot presented the proportion of reads of different ncRNAs.</p>
                     <img src="./{{ img_path.ncrna_type }}">
                     <p>Piechart presented the proportion of reads of different ncRNAs and unmapped reads.</p>
-                    <img src="./{{ img_path.ncrna_type }}">
+                    <img src="./{{ img_path.ncrna_type_pie }}">
                 </div>
-                <div>
+                <div style="clear: both;">
                     <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>Top 10 highly expressed RNAs from different ncRNAs</h4>
                     <p>The top 10 highly expressed RNAs are displayed in the following table:</p>
                     <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
@@ -167,7 +167,8 @@ piR-34536       114     74.06</pre>
                         </table>
                     <br><br>
                 </div>
-                <div>
+                <div style="clear: both;">
+                    <br>
                     <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>The number of expressions of RNA in different types of ncRNA</h4>
                     <p>The number of expressions of RNA in different types of ncRNA are displayed in the following table:</p>
                     <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
@@ -175,14 +176,20 @@ piR-34536       114     74.06</pre>
                             <th>ncRNAType</th>
                             <th>Number</th>
                         </tr>
-                        {% for item in body2 %}
+                        {% for item in sam_info.ncrna_list %}
                         <tr align='center'>
-                            <td>{{ item.Category }}</td>
-                            <td>{{ item.MappedTag }}</td>
+                            <td>{{ item }}</td>
+                            <td>{{ num_rnas[item] }}</td>
                         </tr>
                         {% endfor%}
                         </table>
                     <br><br>
+                </div>
+                <div style="clear: both;">
+                    <br>
+                    <h4><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Visualization</h4>
+                    <p>The number of expressions of RNA in different types of ncRNA.</p>
+                    <img src="./{{ img_path.ncrna_number }}">
                 </div>
                 <div class="row">
                     <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Other results:</h2>
