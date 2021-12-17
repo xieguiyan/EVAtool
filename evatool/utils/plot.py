@@ -48,7 +48,7 @@ class Plot:
         read_type.get_figure().savefig(f"{self.outputdir}/distribution_of_ncRNA_type.pdf")
 
     def read_type_distribution_pie(self) -> None:
-        plt.figure(dpi=300, figsize=(4, 8))
+        plt.figure(dpi=300, figsize=(7, 5))
         read_type_pie = pd.read_table(f"{self.samprefix}.stat", header=None, sep="\t", skiprows=4, dtype=str)
         read_type_pie.columns = ["Category", "MappingTag", "Ratio"]
         read_type_pie["Ratio"] = read_type_pie["Ratio"].apply(lambda x: np.nan if x in ["-"] else x[:-1]).astype(float)
