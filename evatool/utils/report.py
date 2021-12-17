@@ -76,7 +76,6 @@ class Report:
                     if a < 6:
                         a = a + 1
                         line = t.strip().split("\t")
-                        print(line)
                         if line[0] != "GeneSymbol":
                             ncrna_exp = {}
                             ncrna_exp["rna"] = line[0]
