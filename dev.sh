@@ -19,5 +19,5 @@ rm -rf dist build
 python setup.py sdist bdist_wheel
 python3 -m twine upload --repository testpypi dist/*
 
-# python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps evatool
+# python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps evatool --upgrade
 # python3 -m evatool
