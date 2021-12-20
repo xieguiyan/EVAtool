@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
   liblapack-dev \
   python-dev \
   python-numpy \
+  python-pip \
   r-base \
   r-cran-nloptr \
   zlib1g-dev \
