@@ -20,6 +20,9 @@ decorator==5.0.9
 defusedxml==0.7.1
 docutils==0.17.1
 entrypoints==0.3
+evatool==0.1.1
+evatool-t==0.1.1
+evatoolt==0.1.1
 flake8==3.9.2
 idna==3.2
 imagesize==1.3.0
@@ -50,7 +53,7 @@ jupyterlab-server==2.8.2
 jupyterlab-widgets==1.0.2
 keyring==23.1.0
 kiwisolver==1.3.1
-lxml==4.6.5
+lxml==4.6.4
 MarkupSafe==2.0.1
 matplotlib==3.3.4
 mccabe==0.6.1

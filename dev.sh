@@ -10,6 +10,10 @@
 
 
 # python3 -m build
+source venv/bin/activate
+
+#renew requirements
+pip freeze > ./requirements-prod.txt
 
 rm -rf dist build
 python setup.py sdist bdist_wheel

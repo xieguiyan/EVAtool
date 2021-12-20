@@ -53,40 +53,25 @@
             </div>
             <div style="margin-left: 15px;">
                 <div class="row">
-                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Basic analysis information:</h2>
-                    <ul>
-                        <li><span>Sample name: </span></li>
-                        <p>{{ sam_info.sam_name }}</p>
-                        <li><span>ncRNA types: </span></li>
-                        <p>{{ sam_info.ncrna_list}}</p>
-                        <li><span>Directory of result: </span></li>
-                        <p>{{ sam_info.sam_path }}</p>
-                        <li><span>Config file for your analysis: </span></li>
-                        <p>{{ config }}</p>
-                    </ul>
+                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Input parameters:</h2>
+                    <pre>
+<ul>
+<li><span>Sample name: </span></li>
+<span>{{ sam_info.sam_name }}</span>
+
+<li><span>ncRNA types: </span></li>
+<span>{{ sam_info.ncrna_list}}</span>
+
+<li><span>Directory of result: </span></li>
+<span>{{ sam_info.sam_path }}</span>
+
+<li><span>Config file for your analysis: </span></li>
+<span>{{ config }}</span>
+</ul>
+                    </pre>
                 </div>
                 <div>
-                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Analysis result:</h2>
-                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>ncRNA(s) read-count & RPM quantifications file</h4>
-                    <ul>
-                        <li>
-                            <p>
-                                <span>File name: </span>{{ sam_info.sam_name }}.{ RNA type }.exp
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                <span>File content:</span> The format of these tab-delimited files is as follows:
-                            </p>
-                        </li>
-                    </ul>
-                    <pre>GeneSymbol      TagCount        RPM
-piR-33043       21745   14126.22
-piR-35982       872     566.48
-piR-49143       3088    2006.06
-piR-49144       2602    1690.34
-piR-33044       2267    1472.71
-piR-34536       114     74.06</pre>
+                    <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Analysis results:</h2>
                     <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>Reads length distribution</h4>
                     <p>The length distributions of the reads in the trimmed {{ sam_info.sam_name }} sample are showed as follow:</p>
                     <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
@@ -116,7 +101,7 @@ piR-34536       114     74.06</pre>
                 </div>
                 <div>
                     <h4><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Visualization</h4>
-                    <p>Line charts display the distributions of the reads length.</p>
+                    <p>Line chart displays the distributions of the read length.</p>
                     <img src="./{{ img_path.read_len }}">
                 </div>
                 <div>
@@ -141,8 +126,84 @@ piR-34536       114     74.06</pre>
                 <div style="clear: both;">
                     <br>
                     <h4><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Visualization</h4>
-                    <p>Barplot presented the proportion of reads of different ncRNAs.</p>
+                    <p>The bar plot shows the ratio of reads for different ncRNAs.</p>
                     <img src="./{{ img_path.ncrna_type }}">
+                    <p>Pie chart shows the proportion of reads for different ncRNAs and unmapped reads.</p>
+                    <img src="./{{ img_path.ncrna_type_pie }}">
+                </div>
+                <div style="clear: both;">
+                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>ncRNA(s) read count & RPM quantifications file</h4>
+                    <ul>
+                        <li>
+                            <p>
+                                <span>File name: </span>
+                            </p>
+                        </li>
+                        <span>{{ sam_info.sam_name }}.{ RNA type }.exp</span>
+                        <li>
+                            <p>
+                                <span>File content:</span>
+                            </p>
+                        </li>
+                        <span>The format of these tab-delimited files is as follows:</span>
+                    </ul>
+                    <pre>GeneSymbol      TagCount      RPM
+piR-33043       21745         14126.22
+piR-35982       872           566.48
+piR-49143       3088          2006.06
+piR-49144       2602          1690.34
+piR-33044       2267          1472.71
+piR-34536       114           74.06</pre>
+                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>Top 5 highly expressed RNAs from different ncRNAs</h4>
+                    <p>The top 5 highly expressed RNAs are displayed in the following table:</p>
+                    <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
+                        <tr>
+                            <th>ncRNAType</th>
+                            <th>RNA name</th>
+                            <th>RPM</th>
+                            <th>Count</th>
+                        </tr>
+                        {% for item in all_top10 %}
+                        <tr align='center'>
+                            <td>{{ item.type }}</td>
+                            <td>{{ item.rna }}</td>
+                            <td>{{ item.rpm }}</td>
+                            <td>{{ item.count }}</td>
+                        </tr>
+                        {% endfor%}
+                        </table>
+                    <br><br>
+                </div>
+                <div style="clear: both;">
+                    <br>
+                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>The abundance distributions of each ncRNA</h4>
+                    <p>The following plots shows the different ncRNA expression profile in extracellular vesicles.</p>
+                    {% for item in sam_info.ncrna_list %}
+                    <img src="./exp_distribution_of_{{ item }}.png">
+                    {% endfor%}
+                </div>
+                <div style="clear: both;">
+                    <h4><i class="fa fa-fire" aria-hidden="true">&nbsp;</i>The number of expressed RNAs detected in different types of ncRNA</h4>
+                    <p>The details are displayed in the following table:</p>
+                    <table border="1" width = "60%" cellspacing='0' cellpadding='0' align='left'>
+                        <tr>
+                            <th>ncRNAType</th>
+                            <th>Number</th>
+                        </tr>
+                        {% for item in sam_info.ncrna_list %}
+                        <tr align='center'>
+                            <td>{{ item }}</td>
+                            <td>{{ num_rnas[item] }}</td>
+                        </tr>
+                        {% endfor%}
+                        </table>
+                    <br><br>
+                </div>
+                <div style="clear: both;">
+                    <br>
+                    <h4><i class="fa fa-area-chart" aria-hidden="true">&nbsp;</i>Visualization</h4>
+                    <p>The distribution of RNA expression quantity in different types of ncRNA.</p>
+                    <img src="./{{ img_path.ncrna_number }}">
                 </div>
                 <div class="row">
                     <h2><i class="fa fa-cubes" aria-hidden="true">&nbsp;</i>Other results:</h2>
