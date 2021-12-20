@@ -27,6 +27,6 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 # RUN pip install --upgrade pip && pip install --upgrade evatool
-RUN  python3 -m pip install --upgrade pip &&  python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps evatool
+RUN  python3 -m pip install --upgrade pip &&  python3 -m pip install evatool --upgrade
 
 ENTRYPOINT [ "evatool" ]
