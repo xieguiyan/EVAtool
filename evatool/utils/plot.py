@@ -31,6 +31,7 @@ class Plot:
         read = pd.read_table(f"{self.samprefix}.freq.stat", sep="\t", header=None, skipfooter=1, engine="python")
         read.columns = ["Read length", "count", "Read count percentage"]
         read_len = sns.lineplot(x="Read length", y="Read count percentage", data=read)
+        sns.despine()
         # save image
         read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.png")
         read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.pdf")
@@ -43,6 +44,7 @@ class Plot:
         ncrna_type["Ratio"] = ncrna_type["Ratio"].apply(lambda x: np.nan if x in ["-"] else x[:-1]).astype(float) / 100
         read_type = sns.barplot(x="Category", y="Ratio", data=ncrna_type)
         read_type.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=1, decimals=1))
+        sns.despine()
         # save image
         read_type.get_figure().savefig(f"{self.outputdir}/distribution_of_ncRNA_type.png")
         read_type.get_figure().savefig(f"{self.outputdir}/distribution_of_ncRNA_type.pdf")
@@ -101,7 +103,7 @@ class Plot:
         for i in self.ncrna_lst:
             count = len(open(f"{self.samprefix}.{i}.exp", "r").readlines()) - 1
             rna_count.append(count)
-        plt.figure(dpi=300, figsize=(8, 4))
+        plt.figure(dpi=300, figsize=(8, 5))
         plt.plot(self.ncrna_lst, rna_count, "r", lw=2, color="#EA6856")
         sns.despine()
         plt.xlabel("ncRNA type")
