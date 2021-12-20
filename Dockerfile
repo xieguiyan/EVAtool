@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
   zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip && pip install --upgrade evatool
+# RUN pip install --upgrade pip && pip install --upgrade evatool
+RUN pip install --upgrade pip && pip install --index-url https://test.pypi.org/simple/ --no-deps evatool
 
 ENTRYPOINT [ "evatool" ]
