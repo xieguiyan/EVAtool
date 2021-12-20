@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 MAJOR = 0
 MINOR = 1
-MICRO = 4
+MICRO = 5
 ISRELEASED = True
 VERSION = f"{MAJOR}.{MINOR}.{MICRO}"
 
@@ -17,7 +17,7 @@ with open("README.md", "r") as fh:
 setup(
     name="evatool",
     version=VERSION,
-#    keyworkds="evatool",
+    #    keyworkds="evatool",
     description=DESCRIPTION,
     long_description_content_type="text/markdown",
     long_description=long_description,
@@ -32,4 +32,5 @@ setup(
     platforms="any",
     package_dir={"evatool": "evatool"},
     python_requires=">=3.5",
+    entry_points={"console_scripts": ["evatool=evatool:main"]},
 )
