@@ -17,7 +17,7 @@ source venv/bin/activate
 
 rm -rf dist build
 python setup.py sdist bdist_wheel
-python3 -m twine upload --repository testpypi dist/*
+python3 -m twine upload --repository pypi dist/*
 
-# python3 -m pip install --index-url https://test.pypi.org/simple/  evatool --upgrade
+# python3 -m pip install --index-url https://pypi.org/simple/ evatool --upgrade
 # python3 -m evatool
