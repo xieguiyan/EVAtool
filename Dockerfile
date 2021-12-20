@@ -18,10 +18,12 @@ RUN apt-get update && apt-get install -y \
   liblapack-dev \
   python-dev \
   python-numpy \
-  python-pip \
   r-base \
   r-cran-nloptr \
   zlib1g-dev \
+  && apt-add-repository universe \
+  && apt-get update \
+  && apt-get install -y python3-pip \
   && rm -rf /var/lib/apt/lists/*
 
 # RUN pip install --upgrade pip && pip install --upgrade evatool
