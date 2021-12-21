@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 import datetime
 from pathlib import Path
 
-template_path = Path.cwd() / "evatool" / "resource"
+template_path = "./resource"
 
 
 class Report:
