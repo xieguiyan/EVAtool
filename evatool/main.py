@@ -5,20 +5,20 @@
 # @DATE: 2021-09-03 11:21:07
 # @DESCRIPTION:
 
-import sys
+# import sys
 from pathlib import Path
 
-sys.path.append("../EVAtool")
+# sys.path.append("../EVAtool")
 
-from evatool.utils.fastq import Fastq
-from evatool.utils.config import Config
-from evatool.utils.logger import Logger
-from evatool.utils.sam import SAM
-from evatool.utils.bam import Bam
-from evatool.utils.tag import Tag
-from evatool.utils.stat import Stat
-from evatool.utils.plot import Plot
-from evatool.utils.report import Report
+from utils.fastq import Fastq
+from utils.config import Config
+from utils.logger import Logger
+from utils.sam import SAM
+from utils.bam import Bam
+from utils.tag import Tag
+from utils.stat import Stat
+from utils.plot import Plot
+from utils.report import Report
 
 import argparse
 import datetime
@@ -50,26 +50,8 @@ def run(inputfile: Path, outputdir: Path, config: Path, ncrna_lst: list) -> None
     return 1
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter,
-        description="EVAtool could be used to estimate the quantification and abundence of small ncRNA from EV or other sources.",
-    )
-    parser.add_argument("-i", "--input", help="The path of the input file, the file type could be '.sra, .fastq.gz or .fastq'.", required=True)
-    parser.add_argument("-o", "--output", help="The path of output file.", required=True)
-    parser.add_argument("-c", "--config", help="The path of the Config file. User can download the config file from url, or define yourself.", required=False, default=current_path / "../refs/reference_config.json")
-    parser.add_argument(
-        "-n",
-        "--ncrna",
-        nargs="*",
-        type=str,
-        help="The list of small ncRNA types.  User can use default ncRNA list (miRNA, rRNA, tRNA, piRNA, snoRNA, snRNA, YRNA), or define yourself.",
-        required=False,
-        default=["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "YRNA"],
-    )
-    configure = parser.parse_args()
-
-    logging.config.fileConfig(current_path / "resource/logging.conf")
+def main(configure):
+    logging.config.fileConfig("./resource/logging.conf")
     logger = logging.getLogger("EVAtool")
     log_name = logger.handlers[0].baseFilename
     logger.handlers[0].baseFilename = log_name.replace("evatool.log", f"{configure.output}/test.log")
@@ -89,4 +71,21 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawTextHelpFormatter,
+        description="EVAtool could be used to estimate the quantification and abundence of small ncRNA from EV or other sources.",
+    )
+    parser.add_argument("-i", "--input", help="The path of the input file, the file type could be '.sra, .fastq.gz or .fastq'.", required=True)
+    parser.add_argument("-o", "--output", help="The path of output file.", required=True)
+    parser.add_argument("-c", "--config", help="The path of the Config file. User can download the config file from url, or define yourself.", required=False, default="./resource/reference_config.json")
+    parser.add_argument(
+        "-n",
+        "--ncrna",
+        nargs="*",
+        type=str,
+        help="The list of small ncRNA types.  User can use default ncRNA list (miRNA, rRNA, tRNA, piRNA, snoRNA, snRNA, YRNA), or define yourself.",
+        required=False,
+        default=["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "YRNA"],
+    )
+    configure = parser.parse_args()
+    main(configure)
