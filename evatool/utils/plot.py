@@ -93,7 +93,6 @@ class Plot:
             plt.hist(read_expr["TagCount"], bins=40, facecolor="#00C9D3")
             sns.despine()
             plt.xlabel("TagCount")
-            print(f"{self.samprefix}.{i}.exp")
             plt.savefig(f"{self.outputdir}/exp_distribution_of_{i}.png")
             plt.savefig(f"{self.outputdir}/exp_distribution_of_{i}.pdf")
         matplotlib.rc("figure", max_open_warning=0)
