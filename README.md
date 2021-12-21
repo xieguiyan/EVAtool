@@ -4,7 +4,7 @@
 ###### Background
 non-coding RNAs (ncRNA) in extracellular vesicles (EVs) role as important agents of cell-to-cell communication. The abundance of transcripts varies in different states, especially in the tumors. Therefore, quantification of ncRNAs in EVs plays an important role in the process of exploring cancer diagnostic biomarkers.
 
-###### ++Requires++
+###### Requires
 python >= 3.5 <br>
 
 ###### Softwares
@@ -58,44 +58,46 @@ bedtools = 2.30.0 <br>
 - Install evatool
    
 ```
-pip install -i https://test.pypi.org/simple/ evatoolt
+pip install evatool
 ```
 
 - Example
 
 ```
->>>from evatool.utils.fastq import Fastq
->>>from evatool.utils.config import Config
->>>from evatool.utils.logger import Logger
->>> def test_config():
-...     from evatool.utils.config import Config
-...     config = Config(configfile="./refs/reference_config.json")
-...     print(config.config)
-
->>> test_config()
+>>> evatool -i [absolute path]/example.fastq.gz -o [output directory]
 ```
-- Input parameters
+- Input parameters (Enter evatool -h for more details)
 
 ```
 #-i: sra file with path (required)
 #-o: output directory (required)
 #-c: configure file with path ( not required)
 #-n: ncRNA type list (not required)
+#-h: More details about usages
 ```
 
-- Two ways of testing the scripts
+- The other two ways when use EVAtool:
+
+
+1. Download latest EVAtool docker image 
 
 ```
-bash /home/xiegy/github/EVAtool/test/example-script/example_evatool.sh
+# installation
+docker pull guobioinfolab/evatool:latest
+# run evatool
+docker run -it --rm -v evatool -i [absolute path of the input data] -o [absolute path of the output directory]
+```
+2. pip install evatool
+```
+>>>from utils.fastq import Fastq
+>>>from utils.config import Config
+>>>from utils.logger import Logger
+>>> def test_config():
+...     from utils.config import Config
+...     config = Config(configfile="./refs/reference_config.json")
+...     print(config.config)
 
-or
-
-/home/xiegy/github/EVAtool/venv/bin/python \
-/home/xiegy/github/EVAtool/evatool/main.py \
--i /home/xiegy/github/EVAtool/test/example-data/example.fastq.gz \
--o /home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz \
-#-c /home/xiegy/github/EVAtool/evatool/resource/configure.json \
-#-n "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA"
+>>> test_config()
 ```
 
 ###### Modules in evatool
@@ -131,14 +133,14 @@ or
 ###### Advanced usage
 1. Use each module independently
 >     After installing evatool, users only need to import the interested package(s) in the python interpreter to use the corresponding module.
-> e.g. 
+e.g. 
 
 ```
->>>from evatool.utils.fastq import Fastq
->>>from evatool.utils.config import Config
->>>from evatool.utils.logger import Logger
+>>>from utils.fastq import Fastq
+>>>from utils.config import Config
+>>>from utils.logger import Logger
 >>> def test_config():
-...     from evatool.utils.config import Config
+...     from utils.config import Config
 ...     config = Config(configfile="./refs/reference_config.json")
 ...     print(config.config)
 
@@ -173,29 +175,45 @@ or
 
 
 ###### Directory tree (main)
-├── __init__.py <br>
-├── main.py <br>
-├── resource <br>
-│   ├── __init__.py <br>
-│   ├── logging.conf <br>
-│   ├── template_report.html <br>
-│   └── tool_config.json <br>
-└── utils <br>
-    ├── bam.py <br>
-    ├── config.py <br>
-    ├── fastq.py <br>
-    ├── __init__.py <br>
-    ├── logger.py <br>
-    ├── plot.py <br>
-    ├── README.md <br>
-    ├── report.py <br>
-    ├── sam.py <br>
-    ├── stat.py <br>
-    └── tag.py <br>
+
+
+```
+├── bin
+│   ├── bedtools
+│   ├── bowtie2
+│   ├── bowtie2-align-l
+│   ├── bowtie2-align-l-debug
+│   ├── bowtie2-align-s
+│   ├── bowtie2-align-s-debug
+│   ├── fastq-dump
+│   ├── samtools
+│   └── trimmomatic-0.39.jar
+├── __init__.py
+├── main.py
+├── resource
+│   ├── __init__.py
+│   ├── logging.conf
+│   ├── reference_config.json
+│   ├── template_report.html
+│   └── tool_config.json
+└── utils
+    ├── bam.py
+    ├── config.py
+    ├── fastq.py
+    ├── __init__.py
+    ├── logger.py
+    ├── plot.py
+    ├── report.py
+    ├── sam.py
+    ├── stat.py
+    └── tag.py
+```
+
 
 
 ###### Last news
 -  evatoolt 0.1.1 upload evatool to pypi
 -  evatoolt 0.1.2 add README.md
+-  evatoolt 0.1.8 fixed bug
  
  
