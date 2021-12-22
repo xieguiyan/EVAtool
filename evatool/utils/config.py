@@ -25,8 +25,6 @@ class Config(object):
         try:
             with open(self.configfile, "r") as f:
                 ref_config = json.load(f)
-                print(self.configfile.parent)
-                print(current_path)
                 for key in ref_config:
                     if ref_config[key].startswith("/refs"):
                         if self.configfile.parent == Path("resource"):
