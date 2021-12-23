@@ -9,7 +9,8 @@ from jinja2 import Environment, FileSystemLoader
 import datetime
 from pathlib import Path
 
-template_path = "./resource"
+current_path = Path(__file__).parent
+template_path = f"{current_path}/../resource"
 
 
 class Report:

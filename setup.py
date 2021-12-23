@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 MAJOR = 0
 MINOR = 1
-MICRO = 7
+MICRO = 13
 ISRELEASED = True
 VERSION = f"{MAJOR}.{MINOR}.{MICRO}"
 
@@ -17,7 +17,7 @@ with open("README.md", "r") as fh:
 setup(
     name="evatool",
     version=VERSION,
-    #    keyworkds="evatool",
+    keywords="evatool, small ncRNA, abundance, quantification",
     description=DESCRIPTION,
     long_description_content_type="text/markdown",
     long_description=long_description,
@@ -26,7 +26,7 @@ setup(
     url="https://github.com/xieguiyan/EVAtool",
     packages=find_packages(),
     include_package_data=True,
-    package_data={"evatool.resource": ["*.json"]},
+    package_data={"evatool.resource": ["*.json", "*.conf", "*.html"], "evatool.bin": ["*"]},
     install_requires=["numpy", "pandas", "seaborn", "jinja2"],
     extras_require={
         "dev": ["pytest", "pytest-cov", "pytest-mock", "pytest-xdist", "tox"],
@@ -36,5 +36,5 @@ setup(
     platforms="any",
     package_dir={"evatool": "evatool"},
     python_requires=">=3.5",
-    entry_points={"console_scripts": ["evatool=evatool.main:main"]},
+    entry_points={"console_scripts": ["evatool = evatool.main:main"]},
 )
