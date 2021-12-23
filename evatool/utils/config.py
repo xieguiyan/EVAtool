@@ -26,15 +26,20 @@ class Config(object):
                 if tool_conf[k].startswith("./bin"):
                     tool_conf[k] = f"{current_path}/{tool_conf[k].replace('./', '../')}"
         try:
-            with open(self.configfile, "r") as f:
-                ref_config = json.load(f)
-                for key in ref_config:
-                    if ref_config[key].startswith("/refs"):
-                        if self.configfile.parent == Path("resource"):
-                            ref_config[key] = f"{current_path}/{ref_config[key].replace('./', '../')}"
-                        else:
+            if self.configfile.parent == Path("resource"):
+                with open(f"{current_path}/../{self.configfile}", "r") as f:
+                    ref_config = json.load(f)
+                    for key in ref_config:
+                        if ref_config[key].startswith("/refs"):
+                            ref_config[key] = f"{ref_config[key].replace('/refs', './refs')}"
+                        tool_conf[key] = ref_config[key]
+            else:
+                with open(self.configfile, "r") as f:
+                    ref_config = json.load(f)
+                    for key in ref_config:
+                        if ref_config[key].startswith("/refs"):
                             ref_config[key] = f"{self.configfile.parent}/{ref_config[key].replace('/refs/','')}"
-                    tool_conf[key] = ref_config[key]
+                        tool_conf[key] = ref_config[key]
             return tool_conf
         except IOError:
             print(f"{self.configfile} not exists.")
