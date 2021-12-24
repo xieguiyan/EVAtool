@@ -27,6 +27,7 @@ class Plot:
 
     def read_length_distribution(self) -> None:
         # Reads length distribution
+        sns.set_style("white")
         plt.figure(dpi=300, figsize=(9, 5))
         read = pd.read_table(f"{self.samprefix}.freq.stat", sep="\t", header=None, skipfooter=1, engine="python")
         read.columns = ["Read length", "count", "Read count percentage"]
@@ -38,6 +39,7 @@ class Plot:
 
     def read_type_distribution_hist(self) -> None:
         # Read type distribution
+        sns.set_style("white")
         plt.figure(dpi=300, figsize=(9, 5))
         ncrna_type = pd.read_table(f"{self.samprefix}.stat", header=None, sep="\t", skiprows=4, dtype=str)
         ncrna_type.columns = ["Category", "MappingTag", "Ratio"]
@@ -50,7 +52,7 @@ class Plot:
         read_type.get_figure().savefig(f"{self.outputdir}/distribution_of_ncRNA_type.pdf")
 
     def read_type_distribution_pie(self) -> None:
-        plt.figure(dpi=300, figsize=(7, 5))
+        plt.figure(dpi=300, figsize=(8, 6))
         read_type_pie = pd.read_table(f"{self.samprefix}.stat", header=None, sep="\t", skiprows=4, dtype=str)
         read_type_pie.columns = ["Category", "MappingTag", "Ratio"]
         read_type_pie["Ratio"] = read_type_pie["Ratio"].apply(lambda x: np.nan if x in ["-"] else x[:-1]).astype(float)
