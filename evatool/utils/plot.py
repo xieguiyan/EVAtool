@@ -16,6 +16,7 @@ from matplotlib import ticker
 from pathlib import Path
 
 sns.set()
+plt.switch_backend("agg")
 
 
 class Plot:
