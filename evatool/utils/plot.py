@@ -53,7 +53,7 @@ class Plot:
         read_type.get_figure().savefig(f"{self.outputdir}/distribution_of_ncRNA_type.pdf")
 
     def read_type_distribution_pie(self) -> None:
-        plt.figure(dpi=300, figsize=(8, 6))
+        plt.figure(dpi=300, figsize=(8, 8))
         read_type_pie = pd.read_table(f"{self.samprefix}.stat", header=None, sep="\t", skiprows=4, dtype=str)
         read_type_pie.columns = ["Category", "MappingTag", "Ratio"]
         read_type_pie["Ratio"] = read_type_pie["Ratio"].apply(lambda x: np.nan if x in ["-"] else x[:-1]).astype(float)
@@ -64,7 +64,7 @@ class Plot:
         all_category = list(read_type_pie["Category"]) + ["unmapped"]
         all_labels = ["{0} - {1:1.2f}%".format(i, j) for i, j in zip(all_category, all_ratio)]
         plt.pie(all_ratio)
-        plt.legend(labels=all_labels, bbox_to_anchor=(1.15, 0.5), loc="center", frameon=False, fontsize=7)
+        plt.legend(labels=all_labels, bbox_to_anchor=(1.05, 0.5), loc="center", frameon=False, fontsize=7)
         # save image
         plt.savefig(f"{self.outputdir}/distribution_of_ncRNA_type_pie.png")
         plt.savefig(f"{self.outputdir}/distribution_of_ncRNA_type_pie.pdf")
