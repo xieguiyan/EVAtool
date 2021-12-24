@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 MAJOR = 0
 MINOR = 1
-MICRO = 14
+MICRO = 15
 ISRELEASED = True
 VERSION = f"{MAJOR}.{MINOR}.{MICRO}"
 
@@ -27,7 +27,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={"evatool.resource": ["*.json", "*.conf", "*.html"], "evatool.bin": ["*"]},
-    install_requires=["numpy", "pandas", "seaborn", "jinja2"],
+    install_requires=["numpy>=1.15", "pandas", "seaborn>=0.9.0", "jinja2"],
     extras_require={
         "dev": ["pytest", "pytest-cov", "pytest-mock", "pytest-xdist", "tox"],
         "interactive": ["matplotlib"],
