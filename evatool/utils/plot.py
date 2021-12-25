@@ -35,8 +35,8 @@ class Plot:
         read_len = sns.lineplot(x="Read length", y="Read count percentage", data=read)
         sns.despine()
         # save image
-        read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.png")
-        read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.pdf")
+        read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.png", bbox_inches="tight")
+        read_len.get_figure().savefig(f"{self.outputdir}/distribution_of_read_len.pdf", bbox_inches="tight")
 
     def read_type_distribution_hist(self) -> None:
         # Read type distribution
@@ -60,8 +60,8 @@ class Plot:
         read_type_map = pd.read_table(f"{self.samprefix}.stat", header=None, sep=":", skiprows=1, dtype=str)
         unmap_ratio = list(re.findall(r"\((.*)%\)", read_type_map[0:2][1][1]))
         unmap_ratio_f = [float(i) for i in unmap_ratio]
-        all_ratio = list(read_type_pie["Ratio"]) + unmap_ratio_f
-        all_category = list(read_type_pie["Category"]) + ["unmapped"]
+        all_ratio = list(read_type_pie["Ratio"]) + [(100 - sum(list(read_type_pie["Ratio"])))]
+        all_category = list(read_type_pie["Category"]) + ["other"]
         all_labels = ["{0} - {1:1.2f}%".format(i, j) for i, j in zip(all_category, all_ratio)]
         plt.pie(all_ratio)
         plt.legend(labels=all_labels, bbox_to_anchor=(1.05, 0.5), loc="center", frameon=False, fontsize=7)
