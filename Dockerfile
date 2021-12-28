@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:wheezy
 LABEL maintainer="Chun-Jie Liu <chunjie.sam.liu@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
