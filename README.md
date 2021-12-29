@@ -1,6 +1,9 @@
 # **EVAtool**
 
 ---
+
+[![Latest PyPI version](https://img.shields.io/pypi/v/phate.svg)](https://pypi.org/project/phate/)
+
 ###### Background
 non-coding RNAs (ncRNA) in extracellular vesicles (EVs) role as important agents of cell-to-cell communication. The abundance of transcripts varies in different states, especially in the tumors. Therefore, quantification of ncRNAs in EVs plays an important role in the process of exploring cancer diagnostic biomarkers.
 
@@ -56,7 +59,7 @@ bedtools = 2.30.0 <br>
         -   "exon_bed_annotation": "/refs/two_elements.sort.bed"
 
 - Install evatool
-   
+
 ```
 pip install evatool
 ```
@@ -79,7 +82,7 @@ pip install evatool
 - The other two ways when use EVAtool:
 
 
-1. Download latest EVAtool docker image 
+1. Download latest EVAtool docker image
 
 ```
 # installation
@@ -105,7 +108,7 @@ docker run -it --rm -v evatool -i [absolute path of the input data] -o [absolute
     - Produce a log file that records the events when the evatool is running.
     - Logger(logfile = Path)
 2. Config
-    - Tansfer the content of config file to each module. 
+    - Tansfer the content of config file to each module.
     - Config(config = Path)
 3. Fastq
     - Transform the raw .sra file to .fastq or .fastq.gz, quality control (QC) and adapter trimming.
@@ -133,7 +136,7 @@ docker run -it --rm -v evatool -i [absolute path of the input data] -o [absolute
 ###### Advanced usage
 1. Use each module independently
 >     After installing evatool, users only need to import the interested package(s) in the python interpreter to use the corresponding module.
-e.g. 
+e.g.
 
 ```
 >>>from utils.fastq import Fastq
@@ -147,12 +150,12 @@ e.g.
 >>> test_config()
 ```
 
-2. Custom ncRNA type(s) 
+2. Custom ncRNA type(s)
     - Based on existing reference sequences
         - change the input parameter of ncRNA type list, the default ncRNAs are include 7 types: "miRNA" "rRNA" "tRNA" "piRNA" "snoRNA" "snRNA" "YRNA".
     - Add other type reference sequences
         - Three steps :
-        
+
         1. Add the ncRNA reference and index into refs;
 
         ```
@@ -161,13 +164,13 @@ e.g.
         ```
 
         2. Change the input parameter of ncRNA type list;
-        
+
         ```
         -n  "miRNA" "rRNA" "tRNA"
         ```
 
         3. Add the ncRNA name and reference directory in config file as following the existing ways.
-        
+
         ```
         "miRNA_index": "/refs/miRNA/hsa.hairpin.fa"
         ```
@@ -215,5 +218,4 @@ e.g.
 -  evatoolt 0.1.1 upload evatool to pypi
 -  evatoolt 0.1.2 add README.md
 -  evatoolt 0.1.8 fixed bug
- 
- 
+
