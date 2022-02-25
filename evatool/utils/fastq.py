@@ -25,7 +25,7 @@ class Fastq(object):
         return True if self.inputfile.suffix == ".sra" else False
 
     def is_fastq(self):
-        return True if (self.inputfile.suffix == ".fastq" or "".join(self.inputfile.suffixes) == ".fastq.gz") else False
+        return True if (self.inputfile.suffix == ".fastq" or self.inputfile.suffix == ".fq" or "".join(self.inputfile.suffixes) == ".fastq.gz" or "".join(self.inputfile.suffixes) == ".fq.gz") else False
 
     def dump_fastq(self):
         cmd = [self.config.config["fastqdump"], "--dumpbase", "--gzip", "--split-files", "-O", self.outputdir, self.inputfile]

@@ -55,11 +55,23 @@ class Stat(object):
                     mir_exp_dict[j] = tag_count
         return mir_exp_dict
 
+    def get_mirna_editing(self, split2):
+        re_edit = re.compile(r"MD:Z:(\d+)(.*)(G+)\s+")
+        m = re_edit.search(split2)
+        if m:
+            return True
+        else:
+            return False
+
     def get_edit_distance(self, split2):
         re_edit = re.compile(r"NM:i:(\d)")
         m = re_edit.search(split2)
+        mirna_edit = self.get_mirna_editing(split2)
         if m:
-            mapped_distance = int(m.group(1))
+            if mirna_edit == True and int(m.group(1)) == 2:
+                mapped_distance = 1
+            else:
+                mapped_distance = int(m.group(1))
         else:
             mapped_distance = 0
         return mapped_distance

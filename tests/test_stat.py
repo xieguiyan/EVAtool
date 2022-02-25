@@ -14,16 +14,16 @@ def test_stat():
 
     stat = Stat(
         fastq=Fastq(
-            inputfile="/home/xiegy/github/EVAtool/test/example-data/example.fastq.gz",
-            outputdir="/home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz",
+            inputfile="/workspace/xiegy/EVAtool/data/srr_for_test/SRR6831610_1.fastq.gz",
+            outputdir="/workspace/xiegy/EVAtool/tmp_result/01_high_ratio_yrna_result",
             config=Config(configfile="/home/xiegy/github/EVAtool/refs/reference_config.json"),
             log=Logger(),
             ncrna_lst=["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "YRNA"],
         ),
         tag=Tag(
             fastq=Fastq(
-                inputfile="/home/xiegy/github/EVAtool/test/example-data/example.fastq.gz",
-                outputdir="/home/xiegy/github/EVAtool/test/tmp_result/example_fq_gz",
+                inputfile="/workspace/xiegy/EVAtool/data/srr_for_test/SRR6831610_1.fastq.gz",
+                outputdir="/workspace/xiegy/EVAtool/tmp_result/01_high_ratio_yrna_result",
                 config=Config(configfile="/home/xiegy/github/EVAtool/refs/reference_config.json"),
                 log=Logger(),
                 ncrna_lst=["miRNA", "rRNA", "tRNA", "piRNA", "snoRNA", "snRNA", "YRNA"],
