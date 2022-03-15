@@ -19,7 +19,7 @@ If you would like to get start using EVAtool, please following the any of the fo
 ### Introduction
 EVAtool (EV analysis tool) is a state-of-the-art tool for quantification and abundance of small ncRNA-seq dataset in EVs. In EVAtool, we collected seven ncRNA types (miRNA, snoRNA, piRNA, snRNA, rRNA, tRNA and Y RNA) references as default to evaluate the abundence of each small ncRNA in EVs.
 
-With current newest dependences (mainly bowtie2, samtool, fastq-dump, bedtools and trimmomatic-0.39.jar) and high-performance algorithm RDAA (Reads Dynamic Assignment Algorithm), the tool is perfectly capable of processing small RNA-seq data from small EVs (sEVs) or large EVs (lEVs). It is also capable of processing other RNA-seq data (such as long ncRNA data) with minor modifications to the command-line call. Finally, EVAtool visualized the main results and supports the online report.
+With current newest dependences (mainly bowtie2, samtool, fastq-dump, bedtools and trimmomatic-0.39.jar) and high-performance algorithm ORAA (Optimized Reads Assignment Algorithm), the tool is perfectly capable of processing small RNA-seq data from small EVs (sEVs) or large EVs (lEVs). It is also capable of processing other RNA-seq data (such as long ncRNA data) with minor modifications to the command-line call. Finally, EVAtool visualized the main results and supports the online report.
 
 EVAtool has been implemented in [Python >=3.5](#python), [Jupyter](#jupyter) and [HTML](#html).
 
