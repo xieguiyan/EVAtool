@@ -8,7 +8,7 @@
 from pathlib import Path
 from .fastq import Fastq
 import gzip
-
+import subprocess
 
 class Tag(object):
     def __init__(self, fastq: Fastq):
@@ -24,7 +24,7 @@ class Tag(object):
 
     def stat_tag(self):
         tag_dict = {}
-        f = gzip.open(f"{self.fastq.outputdir}/{self.fastq.trimname}", "rt")
+        f = gzip.open(self.fastq_output_path)
         for n, line in enumerate(f.readlines()):
             line_number = n + 1
             if line_number % 4 != 2:
@@ -90,6 +90,32 @@ class Tag(object):
 
     def pocess_stat(self):
         if self.is_trimm():
+            self.fastq_input_path = Path(self.fastq.outputdir) / self.fastq.trimname
+            self.fastq_output_path = Path(self.fastq.outputdir) / f"qc_{self.fastq.trimname}"
+            quality_format = "" if self.fastq.quality_format == "-phred33" else "--phred64"
+            fastp_command = [
+                "fastp",
+                quality_format,
+                "--n_base_limit", "5",
+                "--length_required", "15",
+                "--length_limit", "50",
+                "--average_qual", "20",
+                "--disable_adapter_trimming",
+                "--thread", self.fastq.config.config['cpu_number'],
+                "--json", f"{self.prefix}.qc_report.json",
+                "--html", f"{self.prefix}.qc_report.html",
+                "-i", str(self.fastq_input_path),
+                "-o", str(self.fastq_output_path),
+            ]
+            try:
+                # 执行fastp命令
+                print(fastp_command)
+                subprocess.run(fastp_command, check=True)
+                self.fastq.log.log(message=f"Fastp QC completed: {self.fastq_output_path}")
+            except subprocess.CalledProcessError as e:
+                self.fastq.log.log(message=f"Fastp QC failed: {e}")
+                return 
+            
             sorted_tag_number, tag_dict = self.stat_tag()
             fq_len_frequency_dict, reads_n, out_reads_n = self.store_tag(sorted_tag_number, tag_dict)
             self.store_freq(fq_len_frequency_dict, reads_n, out_reads_n)

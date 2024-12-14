@@ -34,25 +34,26 @@ class SAM(object):
             "2>",
             f"{outputpre}.genome.bowtie.stat",
             "&&",
-            self.fastq.config.config["samtools"],
+            "samtools",
             "view -bS",
             f"{outputpre}.genome.sam",
             ">",
             f"{outputpre}.genome.bam",
             "&&",
-            self.fastq.config.config["samtools"],
+            "samtools",
             "sort",
             f"{outputpre}.genome.bam",
             "-o",
             f"{outputpre}.genome.sort.bam",
             "&&",
-            self.fastq.config.config["bedtools"],
+            "bedtools",
             "bamtobed -i",
             f"{outputpre}.genome.sort.bam",
             ">",
             f"{outputpre}.genome.sort.bed",
         ]
         cmd = " ".join(cmd)
+        print(cmd)
         return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     def ncRNA_map(self, ncrna) -> None:
@@ -72,6 +73,7 @@ class SAM(object):
             f"{self.fastq.outputdir}/{sample_input}.{ncrna}.bowtie.stat",
         ]
         cmd = " ".join(cmd)
+        print(cmd)
         map_result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         if map_result.returncode == 0:
             self.fastq.log.log(f"Sucess in align to {ncrna} reference!")

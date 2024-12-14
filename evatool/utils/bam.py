@@ -29,18 +29,19 @@ class Bam(object):
 
     def bed_merge(self):
         cmd = [
-            self.fastq.config.config["bedtools"],
+            "bedtools",
             "merge -s -d 10 -c 6,4,5,5 -o first,collapse,sum,median -i",
             f"{self.fileprefix}.genome.sort.bed.count",
             ">",
             f"{self.fileprefix}.genome.merge.bed",
         ]
         cmd = " ".join(cmd)
+        print(cmd)
         return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     def bed_inter(self):
         cmd = [
-            self.fastq.config.config["bedtools"],
+            "bedtools",
             "intersect",
             "-a",
             f"{self.fileprefix}.genome.merge.bed",
@@ -51,7 +52,7 @@ class Bam(object):
             ">",
             f"{self.fileprefix}.genome.annotation.info",
             "&&",
-            self.fastq.config.config["bedtools"],
+            "bedtools",
             "intersect",
             "-a",
             f"{self.fileprefix}.genome.merge.bed",
@@ -62,7 +63,7 @@ class Bam(object):
             ">",
             f"{self.fileprefix}.genome.unanno.info",
             "&&",
-            self.fastq.config.config["bedtools"],
+            "bedtools",
             "intersect",
             "-a",
             f"{self.fileprefix}.genome.merge.bed",
@@ -74,6 +75,7 @@ class Bam(object):
             f"{self.fileprefix}.exon.annotation.info",
         ]
         cmd = " ".join(cmd)
+        print(cmd)
         return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     def process_bam(self):
