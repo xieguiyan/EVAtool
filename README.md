@@ -21,7 +21,7 @@ EVAtool (EV analysis tool) is a state-of-the-art tool for quantification and abu
 
 With current newest dependences (mainly bowtie2, samtool, fastq-dump, bedtools and trimmomatic-0.39.jar) and high-performance algorithm RDAA (Reads Dynamic Assignment Algorithm), the tool is perfectly capable of processing small RNA-seq data from small EVs (sEVs) or large EVs (lEVs). It is also capable of processing other RNA-seq data (such as long ncRNA data) with minor modifications to the command-line call. Finally, EVAtool visualized the main results and supports the online report.
 
-EVAtool has been implemented in [Python >=3.5](#python), [Jupyter](#jupyter) and [HTML](#html).
+EVAtool has been implemented in [Jupyter](#jupyter) and [HTML](#html).
 
 ### Table of Contents
 
@@ -40,7 +40,6 @@ EVAtool has been implemented in [Python >=3.5](#python), [Jupyter](#jupyter) and
 ### System Requirements
 
 * Windows (>= 7), Mac OS X (>= 10.8) or Linux
-* [Python >= 3.5](https://www.python.org/downloads/)
 * [JDK 8](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
 
 All other software dependencies are installed automatically when installing EVAtool. Some softwares versions are as follows:
@@ -52,11 +51,12 @@ All other software dependencies are installed automatically when installing EVAt
 
 ### Python
 
-#### Installation with `pip`
+#### Installation with `conda`
 
-The Python version of EVAtool can be installed by running the following from a terminal:
-
-    pip install EVAtool
+mamba env create --name EVAtool_env -f EVAtool_env.yaml
+git clone https://github.com/xieguiyan/EVAtool.git
+cd EVAtool/
+python setup.py install
 
 Installation of EVAtool and all dependencies should take no more than one minutes.
 
@@ -68,7 +68,7 @@ The Python version of PHATE can be installed from GitHub by running the followin
     cd EVAtool/
     python setup.py install --user
 
-#### Quick Start by pip
+#### Quick Start by conda
 
 To begin, the human genome and seven types references needed to be download from http://bioinfo.life.hust.edu.cn/EVAtool/ref/refs.zip and unzip it into the working directory.
 
