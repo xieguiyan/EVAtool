@@ -106,7 +106,7 @@ class Plot:
             count = len(open(f"{self.samprefix}.{i}.exp", "r").readlines()) - 1
             rna_count.append(count)
         plt.figure(dpi=300, figsize=(8, 5))
-        plt.plot(self.ncrna_lst, rna_count, "r", lw=2, color="#EA6856")
+        plt.plot(self.ncrna_lst, rna_count, lw=2, color="#EA6856")
         sns.despine()
         plt.xlabel("ncRNA type")
         plt.ylabel("The number of identifed RNAs")
