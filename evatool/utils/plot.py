@@ -117,6 +117,6 @@ class Plot:
     def generate_plot(self):
         self.read_length_distribution()
         self.read_type_distribution_hist()
-        self.read_type_distribution_pie()
+        # self.read_type_distribution_pie()
         self.exp_distribution_bar()
         self.number_of_rna_line()
